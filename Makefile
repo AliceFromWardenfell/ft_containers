@@ -10,7 +10,7 @@ vpath %.cpp	$(SRCS_DIR)
 vpath %.hpp	$(HDRS_DIR)
 INCLUDES	:= -I$(HDRS_DIR)
 
-SRCS		:= main.cpp
+SRCS		:= Main.cpp
 
 OBJS_DIR	:= .objects
 OBJS		:= $(SRCS:%.cpp=$(OBJS_DIR)/%.o)
