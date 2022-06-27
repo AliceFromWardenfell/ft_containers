@@ -12,16 +12,15 @@ namespace ft
 template< typename T, typename Allocator = std::allocator<T> >
 struct BaseVector
 {
-
-	typedef Allocator	allocator_type;
-	typedef T			value_type;
-	typedef T*			pointer;
-	typedef std::size_t	size_type;
+		typedef Allocator	allocator_type;
+		typedef T			value_type;
+		typedef T*			pointer;
+		typedef std::size_t	size_type;
 
 	public:
 
-		BaseVector() :
-			m_ptrStart(NULL),
+		BaseVector()
+		:	m_ptrStart(NULL),
 			m_ptrFinish(NULL),
 			m_ptrEndOfStorage(NULL),
 			m_allocator(std::allocator<value_type>())
@@ -29,8 +28,8 @@ struct BaseVector
 			std::cout << "VectorBase: " << "default constructor" << std::endl; // debug
 		}
 
-		BaseVector(const allocator_type& allocator) :
-			m_ptrStart(NULL),
+		BaseVector(const allocator_type& allocator)
+		:	m_ptrStart(NULL),
 			m_ptrFinish(NULL),
 			m_ptrEndOfStorage(NULL),
 			m_allocator(allocator)
@@ -38,15 +37,15 @@ struct BaseVector
 			std::cout << "VectorBase: " << "allocator constructor" << std::endl; // debug
 		}
 
-		BaseVector(size_type size) :
-			m_allocator(std::allocator<value_type>())
+		BaseVector(size_type size)
+		:	m_allocator(std::allocator<value_type>())
 		{
 			CreateStorage(size);
 			std::cout << "VectorBase: " << "size constructor" << std::endl; // debug
 		}
 
-		BaseVector(size_type size, const allocator_type& allocator) :
-			m_allocator(allocator)
+		BaseVector(size_type size, const allocator_type& allocator)
+		:	m_allocator(allocator)
 		{
 			CreateStorage(size);
 			std::cout << "VectorBase: " << "allocator&size constructor" << std::endl; // debug

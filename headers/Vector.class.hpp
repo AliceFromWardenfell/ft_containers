@@ -40,8 +40,8 @@ class vector : protected BaseVector<T, Allocator>
 			std::cout << "vector: " << "default constructor" << std::endl; // debug
 		}
 
-		explicit vector(const allocator_type& allocator) :
-			base_type(allocator)
+		explicit vector(const allocator_type& allocator)
+		:	base_type(allocator)
 		{
 			std::cout << "vector: " << "allocator constructor" << std::endl; // debug
 		}
