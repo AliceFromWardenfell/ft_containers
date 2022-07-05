@@ -11,7 +11,8 @@ vpath %.cpp	$(SRCS_DIR)
 vpath %.hpp	$(HDRS_DIR)
 INCLUDES	:= -I$(HDRS_DIR)
 
-SRCS		:= main.cpp
+SRCS		:=	main.cpp \
+				vector.test.cpp
 
 OBJS_DIR	:= .objects
 OBJ_PREFIX	:= ft_
