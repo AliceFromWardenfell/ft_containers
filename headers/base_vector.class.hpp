@@ -1,7 +1,7 @@
 #ifndef BASE_VECTOR_CLASS_HPP
-# define BASE_VECTOR_CLASS_HPP
+#define BASE_VECTOR_CLASS_HPP
 
-# pragma once
+#pragma once
 
 #include <memory>
 #include <iostream> // debug
@@ -9,8 +9,8 @@
 namespace ft
 {
 
-template< typename T, typename Allocator = std::allocator<T> >
-struct BaseVector
+template<typename T, typename Allocator = std::allocator<T> >
+struct base_vector
 {
 		typedef Allocator	allocator_type;
 		typedef T			value_type;
@@ -19,7 +19,7 @@ struct BaseVector
 
 	public:
 
-		BaseVector()
+		base_vector()
 		:	m_ptrStart(NULL),
 			m_ptrFinish(NULL),
 			m_ptrEndOfStorage(NULL),
@@ -28,7 +28,7 @@ struct BaseVector
 			std::cout << "VectorBase: " << "default constructor" << std::endl; // debug
 		}
 
-		BaseVector(const allocator_type& allocator)
+		base_vector(const allocator_type& allocator)
 		:	m_ptrStart(NULL),
 			m_ptrFinish(NULL),
 			m_ptrEndOfStorage(NULL),
@@ -37,23 +37,23 @@ struct BaseVector
 			std::cout << "VectorBase: " << "allocator constructor" << std::endl; // debug
 		}
 
-		BaseVector(size_type size)
+		base_vector(size_type size)
 		:	m_allocator(std::allocator<value_type>())
 		{
-			CreateStorage(size);
+			m_create_storage(size);
 			std::cout << "VectorBase: " << "size constructor" << std::endl; // debug
 		}
 
-		BaseVector(size_type size, const allocator_type& allocator)
+		base_vector(size_type size, const allocator_type& allocator)
 		:	m_allocator(allocator)
 		{
-			CreateStorage(size);
+			m_create_storage(size);
 			std::cout << "VectorBase: " << "allocator&size constructor" << std::endl; // debug
 		}
 
-		~BaseVector()
+		~base_vector()
 		{
-			Deallocate(m_ptrStart, m_ptrEndOfStorage - m_ptrStart);
+			m_deallocate(m_ptrStart, m_ptrEndOfStorage - m_ptrStart);
 			std::cout << "VectorBase: " << "destructor" << std::endl; // debug
 		}
 
@@ -66,12 +66,12 @@ struct BaseVector
 
 	protected:
 
-		pointer	Allocate(size_type size)
+		pointer	m_allocate(size_type size)
 		{
 			return m_allocator.allocate(size);
 		}
 
-		void	Deallocate(pointer ptr, size_type size)
+		void	m_deallocate(pointer ptr, size_type size)
 		{
 			if (ptr)
 			{
@@ -79,14 +79,14 @@ struct BaseVector
 			}
 		}
 
-		void	CreateStorage(size_type size)
+		void	m_create_storage(size_type size)
 		{
-			m_ptrStart = Allocate(size);
+			m_ptrStart = m_allocate(size);
 			m_ptrFinish = m_ptrStart;
 			m_ptrEndOfStorage = m_ptrStart + size;
 		}
 
-}; // BaseVector
+}; // class base_vector
 
 } // namespace ft
 

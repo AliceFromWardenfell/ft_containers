@@ -1,18 +1,18 @@
 #ifndef VECTOR_CLASS_HPP
-# define VECTOR_CLASS_HPP
+#define VECTOR_CLASS_HPP
 
 #pragma once
 
 #include <memory>
-#include "BaseVector.class.hpp"
+#include "base_vector.class.hpp"
 
 namespace ft
 {
 
-template< typename T, typename Allocator = std::allocator<T> >
-class vector : protected BaseVector<T, Allocator>
+template<typename T, typename Allocator = std::allocator<T> >
+class vector : protected base_vector<T, Allocator>
 {
-		typedef BaseVector<T, Allocator>			base_type;
+		typedef base_vector<T, Allocator>			base_type;
 		typedef vector<T, Allocator>				this_type;
 
 	public:
@@ -26,12 +26,12 @@ class vector : protected BaseVector<T, Allocator>
 		typedef typename base_type::size_type		size_type;
 		typedef T*									iterator; // tmp typedef
 
-		using base_type::ptrStart;
-		using base_type::ptrFinish;
-		using base_type::ptrEndOfStorage;
-		using base_type::Allocate;
-		using base_type::Deallocate;
-		using base_type::CreateStorage;
+		using base_type::m_ptrStart;
+		using base_type::m_ptrFinish;
+		using base_type::m_ptrEndOfStorage;
+		using base_type::m_allocate;
+		using base_type::m_deallocate;
+		using base_type::m_create_storage;
 
 	public:
 
@@ -49,7 +49,7 @@ class vector : protected BaseVector<T, Allocator>
 		explicit vector(size_type size, const value_type& value = value_type(),
 			const allocator_type& allocator = allocator_type());
 
-		template <typename InputIterator>
+		template<typename InputIterator>
 		vector(InputIterator first, InputIterator last,
 			const allocator_type& allocator = allocator_type());
 
@@ -108,7 +108,7 @@ class vector : protected BaseVector<T, Allocator>
 
 		void insert (iterator position, size_type amount, const value_type& value);
 
-		template <typename InputIterator>
+		template<typename InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last);
 
 		iterator erase (iterator position);
@@ -129,27 +129,27 @@ class vector : protected BaseVector<T, Allocator>
 
 }; // class vector
 
-	template <typename T, typename Allocator>
+	template<typename T, typename Allocator>
 	inline void swap(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs) throw();
 
 	/* Relational operators */
 
-	template <typename T, typename Allocator>
+	template<typename T, typename Allocator>
 	inline bool operator==(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
 
-	template <typename T, typename Allocator>
+	template<typename T, typename Allocator>
 	inline bool operator<(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
 
-	template <typename T, typename Allocator>
+	template<typename T, typename Allocator>
 	inline bool operator!=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
 
-	template <typename T, typename Allocator>
+	template<typename T, typename Allocator>
 	inline bool operator>(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
 
-	template <typename T, typename Allocator>
+	template<typename T, typename Allocator>
 	inline bool operator<=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
 
-	template <typename T, typename Allocator>
+	template<typename T, typename Allocator>
 	inline bool operator>=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
 
 } // namespace ft

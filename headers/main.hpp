@@ -9,7 +9,7 @@
 	namespace ft = std;
 	#include <vector>
 #else
-	#include "Vector.class.hpp"
+	#include "vector.class.hpp"
 #endif
 
 #endif
