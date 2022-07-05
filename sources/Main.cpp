@@ -1,20 +1,14 @@
-#include <iostream>
-#include <vector>
-#include "../headers/BaseVector.class.hpp"
-#include "../headers/Vector.class.hpp"
+#include "Main.hpp"
 
 int	main()
 {
 	std::cout << "Hello, STL!" << std::endl;
 
-	std::allocator<char> myAllocator;
+// temp test if two executables work correctly
+#ifdef STL_TEST
+	std::cout << "STL_TEST" << std::endl;
+#else
+	std::cout << "FT_TEST" << std::endl;
+#endif
 
-	std::vector< int, std::allocator<int> > arr(myAllocator);
-
-	ft::BaseVector< int, std::allocator<int> > baseArr(myAllocator);
-
-	if (arr == arr)
-	{
-		arr = arr;
-	}
 }
