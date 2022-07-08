@@ -12,22 +12,28 @@ vpath %.hpp	$(HDRS_DIR)
 INCLUDES	:= -I$(HDRS_DIR)
 
 SRCS		:=	main.cpp \
+				utils.cpp \
+				timer.class.cpp \
 				vector.test.cpp
 
-OBJS_DIR	:= .objects
-OBJ_PREFIX	:= ft_
-OBJS_FT		:= $(SRCS:%.cpp=$(OBJS_DIR)/$(OBJ_PREFIX)%.o)
+FT_PREFIX	:= ft_
+STL_PREFIX	:= stl_
 
-DEPS		:= $(SRCS:%.cpp=$(OBJS_DIR)/%.d)
+OBJS_DIR	:= .objects
+OBJ_PREFIX	:= $(FT_PREFIX)
+OBJS		:= $(SRCS:%.cpp=$(OBJS_DIR)/$(OBJ_PREFIX)%.o)
+
+DEPS		:= $(SRCS:%.cpp=$(OBJS_DIR)/$(OBJ_PREFIX)%.d)
 
 all:
 					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME)'$(BOLD):$(DEF)"
 					@$(MAKE) --no-print-directory $(NAME)
-					@$(MAKE) --no-print-directory NAME=$(NAME_STL) CFLAGS+=" -D STL_TEST" OBJ_PREFIX="stl_" $(NAME_STL)
+					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME_STL)'$(BOLD):$(DEF)"
+					@$(MAKE) --no-print-directory NAME=$(NAME_STL) CFLAGS+=" -D STL_TEST" OBJ_PREFIX=$(STL_PREFIX) $(NAME_STL)
 
-$(NAME):			$(OBJS_FT)
+$(NAME):			$(OBJS)
 					@echo "$(BOLD)Linking files...$(DEF)"
-					@$(CC) $(OBJS_FT) $(CFLAGS) $(INCLUDES) -o $@
+					@$(CC) $(OBJS) $(CFLAGS) $(INCLUDES) -o $@
 					@echo "$(WHITE_B)'$(NAME)'$(BOLD) has been created/updated.$(DEF)"
 
 $(OBJS_DIR)/$(OBJ_PREFIX)%.o:	%.cpp | $(OBJS_DIR)
@@ -39,7 +45,7 @@ $(OBJS_DIR):
 					@echo "$(BOLD)Directory '$(OBJS_DIR)' has been created.$(DEF)"
 
 clean:
-					@rm -rf $(OBJS_FT) $(DEPS) $(OBJS_DIR)
+					@rm -rf $(OBJS) $(DEPS) $(OBJS_DIR)
 					@echo "$(WHITE)$(NAME): $(BOLD)Object files have been cleaned.$(DEF)"
 					@echo "$(WHITE)$(NAME_STL): $(BOLD)Object files have been cleaned.$(DEF)"
 

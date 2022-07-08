@@ -33,7 +33,9 @@ static void	handle_result(int code)
 static int	test_containers()
 {
 	int result = 0;
-	
+
+	print_colored_caption("Containers test:", CLR_GREEN);
+
 	result = vector_test();
 	// error_code = map_test();
 	// error_code = stack_test();
