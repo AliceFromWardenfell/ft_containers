@@ -57,6 +57,11 @@ struct base_vector
 			std::cout << "VectorBase: " << "destructor" << std::endl; // debug
 		}
 
+		allocator_type	get_allocator() const throw()
+		{
+			return m_allocator;
+		}
+
 	protected:
 
 		pointer			m_ptrStart;
