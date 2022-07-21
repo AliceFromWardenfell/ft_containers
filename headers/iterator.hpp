@@ -4,6 +4,7 @@
 #pragma once
 
 #include <iterator>
+#include <iostream> // debug
 
 namespace ft
 {
@@ -19,7 +20,7 @@ struct iterator_traits
 
 }; // struct iterator_traits
 
-template <typename T>
+template<typename T>
 struct iterator_traits<T*>
 {
 	typedef T								value_type;
@@ -30,7 +31,7 @@ struct iterator_traits<T*>
 
 }; // struct iterator_traits<T*>
 
-template <typename T>
+template<typename T>
 struct iterator_traits<const T*>
 {
 	typedef T								value_type;
@@ -40,6 +41,48 @@ struct iterator_traits<const T*>
 	typedef std::random_access_iterator_tag	iterator_category;
 
 }; // struct iterator_traits<const T*>
+
+template<typename iterator, typename container>
+class normal_iterator
+{
+	protected:
+
+		iterator m_current_iterator;
+
+		typedef iterator_traits<iterator>				traits_type;
+		
+	public:
+
+		typedef iterator								iterator_type;
+		typedef typename traits_type::value_type		value_type;
+		typedef typename traits_type::pointer			pointer;
+		typedef typename traits_type::reference			reference;
+		typedef typename traits_type::difference_type	difference_type;
+		typedef typename traits_type::iterator_category	iterator_category;
+		
+		normal_iterator()
+		:	m_current_iterator(iterator_type())
+		{
+			std::cout << "normal_iterator: " << "default constructor" << std::endl; // debug
+		}
+
+		explicit normal_iterator(const iterator_type& it)
+		:	m_current_iterator(it)
+		{
+			std::cout << "normal_iterator: " << "copy constructor" << std::endl; // debug	
+		}
+
+	public:
+
+		// ...
+
+		const iterator_type& get_iterator() const throw()
+		{
+			std::cout << "normal_iterator: " << "get_iterator()" << std::endl; // debug
+			return m_current_iterator;
+		}
+
+}; // class normal_iterator
 
 } // namespace ft
 
