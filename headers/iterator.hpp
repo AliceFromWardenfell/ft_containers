@@ -119,6 +119,68 @@ class normal_iterator
 		normal_iterator operator-(difference_type n) const throw()
 		{ return normal_iterator(m_current_iterator - n); }
 
+		/* Additional overload with the same iterator-types needs because of the std::rel_ops */
+
+		template<typename it_l, typename it_r, typename container>
+		inline bool operator==(const normal_iterator<it_l, container>& lhs,
+								const normal_iterator<it_r, container>& rhs) throw()
+		{ return lhs.get_iterator() == rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline bool operator==(const normal_iterator<iterator, container>& lhs,
+								const normal_iterator<iterator, container>& rhs) throw()
+		{ return lhs.get_iterator() == rhs.get_iterator(); }
+
+		template<typename it_l, typename it_r, typename container>
+		inline bool operator!=(const normal_iterator<it_l, container>& lhs,
+								const normal_iterator<it_r, container>& rhs) throw()
+		{ return lhs.get_iterator() != rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline bool operator!=(const normal_iterator<_Iterator, container>& lhs,
+								const normal_iterator<_Iterator, container>& rhs) throw()
+		{ return lhs.get_iterator() != rhs.get_iterator(); }
+
+		template<typename it_l, typename it_r, typename container>
+		inline bool operator<(const normal_iterator<it_l, container>& lhs,
+								const normal_iterator<it_r, container>& rhs) throw()
+		{ return lhs.get_iterator() < rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline bool operator<(const normal_iterator<iterator, container>& lhs,
+								const normal_iterator<iterator, container>& rhs) throw()
+		{ return lhs.get_iterator() < rhs.get_iterator(); }
+
+		template<typename it_l, typename it_r, typename container>
+		inline bool operator>(const normal_iterator<it_l, container>& lhs,
+								const normal_iterator<it_r, container>& rhs) throw()
+		{ return lhs.get_iterator() > rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline bool operator>(const normal_iterator<iterator, container>& lhs,
+								const normal_iterator<iterator, container>& rhs) throw()
+		{ return lhs.get_iterator() > rhs.get_iterator(); }
+
+		template<typename it_l, typename it_r, typename container>
+		inline bool operator<=(const normal_iterator<it_l, container>& lhs,
+								const normal_iterator<it_r, container>& rhs) throw()
+		{ return lhs.get_iterator() <= rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline bool operator<=(const normal_iterator<iterator, container>& lhs,
+								const normal_iterator<iterator, container>& rhs) throw()
+		{ return lhs.get_iterator() <= rhs.get_iterator(); }
+
+		template<typename it_l, typename it_r, typename container>
+		inline bool operator>=(const normal_iterator<it_l, container>& lhs,
+								const normal_iterator<it_r, container>& rhs) throw()
+		{ return lhs.get_iterator() >= rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline bool operator>=(const normal_iterator<iterator, container>& lhs,
+								const normal_iterator<iterator, container>& rhs) throw()
+		{ return lhs.get_iterator() >= rhs.get_iterator(); }
+
 	private:
 
 		/* need special test
