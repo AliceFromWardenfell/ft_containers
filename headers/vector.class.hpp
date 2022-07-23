@@ -5,6 +5,7 @@
 
 #include <memory>
 #include "base_vector.class.hpp"
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -12,19 +13,23 @@ namespace ft
 template<typename T, typename Allocator = std::allocator<T> >
 class vector : protected base_vector<T, Allocator>
 {
-		typedef base_vector<T, Allocator>			base_type;
-		typedef vector<T, Allocator>				this_type;
+		typedef base_vector<T, Allocator>					base_type;
+		typedef vector<T, Allocator>						this_type;
 
 	public:
 
-		typedef T									value_type;
-		typedef T*									pointer;
-		typedef const T*							const_pointer;
-		typedef T&									reference;
-		typedef const T&							const_reference;
-		typedef Allocator							allocator_type;
-		typedef typename base_type::size_type		size_type;
-		typedef T*									iterator; // tmp typedef
+		typedef T											value_type;
+		typedef T*											pointer;
+		typedef const T*									const_pointer;
+		typedef T&											reference;
+		typedef const T&									const_reference;
+		typedef Allocator									allocator_type;
+		typedef ptrdiff_t									difference_type;
+		typedef typename base_type::size_type				size_type;
+		typedef ft::normal_iterator<pointer, vector>		iterator;
+		typedef ft::normal_iterator<const_pointer, vector>	const_iterator;
+		typedef ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 		using base_type::m_ptrStart;
 		using base_type::m_ptrFinish;
@@ -73,17 +78,17 @@ class vector : protected base_vector<T, Allocator>
 
 		bool empty() const throw();
 
-		void reserve (size_type size);
+		void reserve(size_type size);
 
 	/* Element access */
 
-		reference operator[] (size_type index) throw();
+		reference operator[](size_type index) throw();
 
-		const_reference operator[] (size_type index) const throw();
+		const_reference operator[](size_type index) const throw();
 
-		reference at (size_type index);
+		reference at(size_type index);
 
-		const_reference at (size_type index) const;
+		const_reference at(size_type index) const;
 
 		reference front() throw();
 
@@ -100,22 +105,22 @@ class vector : protected base_vector<T, Allocator>
 		template<typename InputIterator>
 		void assign(InputIterator first, InputIterator last);
 
-		void push_back (const value_type& value);
+		void push_back(const value_type& value);
 
 		void pop_back() throw();
 
-		iterator insert (iterator position, const value_type& value);
+		iterator insert(iterator position, const value_type& value);
 
-		void insert (iterator position, size_type amount, const value_type& value);
+		void insert(iterator position, size_type amount, const value_type& value);
 
 		template<typename InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last);
+		void insert(iterator position, InputIterator first, InputIterator last);
 
-		iterator erase (iterator position);
+		iterator erase(iterator position);
 
-		iterator erase (iterator first, iterator last);
+		iterator erase(iterator first, iterator last);
 
-		void swap (vector& instance) throw();
+		void swap(vector& instance) throw();
 
 		void clear() throw();
 
