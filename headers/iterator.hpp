@@ -108,16 +108,28 @@ class normal_iterator
 		{ return m_current_iterator[n]; } // change to address arithmetics
 
 		normal_iterator& operator+=(difference_type n) throw()
-		{ return m_current_iterator += n; return *this }
+		{ return m_current_iterator += n; return *this; }
 
 		normal_iterator operator+(difference_type n) const throw()
 		{ return normal_iterator(m_current_iterator + n); }
 
-		normal_iterator& operator-=(difference_type n) throw
+		normal_iterator& operator-=(difference_type n) throw ()
 		{ m_current_iterator -= n; return *this; }
 
 		normal_iterator operator-(difference_type n) const throw()
 		{ return normal_iterator(m_current_iterator - n); }
+
+	private:
+
+		/* need special test
+		template<typename type_1, typename type_2> // mb move in utils.cpp
+		bool is_equal_types()
+		{
+			return typeid(type_1) == typeid(type_2);
+		}
+		*/
+
+}; // class normal_iterator
 
 		/* Additional overload with the same iterator-types needs because of the std::rel_ops */
 
@@ -137,8 +149,8 @@ class normal_iterator
 		{ return lhs.get_iterator() != rhs.get_iterator(); }
 
 		template<typename iterator, typename container>
-		inline bool operator!=(const normal_iterator<_Iterator, container>& lhs,
-								const normal_iterator<_Iterator, container>& rhs) throw()
+		inline bool operator!=(const normal_iterator<iterator, container>& lhs,
+								const normal_iterator<iterator, container>& rhs) throw()
 		{ return lhs.get_iterator() != rhs.get_iterator(); }
 
 		template<typename it_l, typename it_r, typename container>
@@ -181,18 +193,6 @@ class normal_iterator
 								const normal_iterator<iterator, container>& rhs) throw()
 		{ return lhs.get_iterator() >= rhs.get_iterator(); }
 
-	private:
-
-		/* need special test
-		template<typename type_1, typename type_2> // mb move in utils.cpp
-		bool is_equal_types()
-		{
-			return typeid(type_1) == typeid(type_2);
-		}
-		*/
-
-}; // class normal_iterator
-
 template<typename iterator>
 class reverse_iterator
 {
@@ -218,8 +218,8 @@ class reverse_iterator
 		reverse_iterator(const reverse_iterator& it)
 		:	m_current_iterator(it.m_current_iterator) { }
 
-		template<typename iterator>
-		reverse_iterator(const reverse_iterator<iterator>& it)
+		template<typename iter>
+		reverse_iterator(const reverse_iterator<iter>& it)
 		:	m_current_iterator(it.get_iterator()) { }
 
 	public:
@@ -259,6 +259,8 @@ class reverse_iterator
 
 		reference operator[](difference_type n) const
 		{ return *(*this + n); }
+
+}; // class reverse_iterator
 
 		template<typename iterator>
 		inline bool operator==(const reverse_iterator<iterator>& lhs,
@@ -305,8 +307,6 @@ class reverse_iterator
 		operator+(typename reverse_iterator<iterator>::difference_type n,
 					const reverse_iterator<iterator>& it)
 		{ return reverse_iterator<iterator>(it.get_iterator() - n); }
-
-};
 
 } // namespace ft
 
