@@ -31,9 +31,9 @@ class vector : protected base_vector<T, Allocator>
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
-		using base_type::m_ptrStart;
-		using base_type::m_ptrFinish;
-		using base_type::m_ptrEndOfStorage;
+		using base_type::m_ptr_start;
+		using base_type::m_ptr_finish;
+		using base_type::m_ptr_end_of_storage;
 		using base_type::m_allocate;
 		using base_type::m_deallocate;
 		using base_type::m_create_storage;
@@ -126,11 +126,33 @@ class vector : protected base_vector<T, Allocator>
 
 	/* Iterators */
 
-		// Place for iterators
+		iterator begin() throw()
+		{ return iterator(this->m_ptr_start); }
+
+		const_iterator begin() const throw()
+		{ return const_iterator(this->m_ptr_start); }
+
+		iterator end() throw()
+		{ return iterator(this->m_ptr_finish); }
+
+		const_iterator end() const throw()
+		{ return const_iterator(this->m_ptr_finish); }
+
+		reverse_iterator rbegin() throw()
+		{ return reverse_iterator(end()); }
+
+		const_reverse_iterator rbegin() const throw()
+		{ return const_reverse_iterator(end()); }
+
+		reverse_iterator rend() throw()
+		{ return reverse_iterator(begin()); }
+
+		const_reverse_iterator rend() const throw()
+		{ return const_reverse_iterator(begin()); }
 
 	protected:
 
-		void CheckRange(size_type size) const;
+		void check_range(size_type size) const;
 
 }; // class vector
 

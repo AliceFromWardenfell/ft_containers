@@ -20,18 +20,18 @@ struct base_vector
 	public:
 
 		base_vector()
-		:	m_ptrStart(NULL),
-			m_ptrFinish(NULL),
-			m_ptrEndOfStorage(NULL),
+		:	m_ptr_start(NULL),
+			m_ptr_finish(NULL),
+			m_ptr_end_of_storage(NULL),
 			m_allocator(std::allocator<value_type>())
 		{
 			std::cout << "VectorBase: " << "default constructor" << std::endl; // debug
 		}
 
 		base_vector(const allocator_type& allocator)
-		:	m_ptrStart(NULL),
-			m_ptrFinish(NULL),
-			m_ptrEndOfStorage(NULL),
+		:	m_ptr_start(NULL),
+			m_ptr_finish(NULL),
+			m_ptr_end_of_storage(NULL),
 			m_allocator(allocator)
 		{
 			std::cout << "VectorBase: " << "allocator constructor" << std::endl; // debug
@@ -53,7 +53,7 @@ struct base_vector
 
 		~base_vector()
 		{
-			m_deallocate(m_ptrStart, m_ptrEndOfStorage - m_ptrStart);
+			m_deallocate(m_ptr_start, m_ptr_end_of_storage - m_ptr_start);
 			std::cout << "VectorBase: " << "destructor" << std::endl; // debug
 		}
 
@@ -64,9 +64,9 @@ struct base_vector
 
 	protected:
 
-		pointer			m_ptrStart;
-		pointer			m_ptrFinish;
-		pointer			m_ptrEndOfStorage;
+		pointer			m_ptr_start;
+		pointer			m_ptr_finish;
+		pointer			m_ptr_end_of_storage;
 		allocator_type	m_allocator;
 
 	protected:
@@ -86,9 +86,9 @@ struct base_vector
 
 		void	m_create_storage(size_type size)
 		{
-			m_ptrStart = m_allocate(size);
-			m_ptrFinish = m_ptrStart;
-			m_ptrEndOfStorage = m_ptrStart + size;
+			m_ptr_start = m_allocate(size);
+			m_ptr_finish = m_ptr_start;
+			m_ptr_end_of_storage = m_ptr_start + size;
 		}
 
 }; // class base_vector
