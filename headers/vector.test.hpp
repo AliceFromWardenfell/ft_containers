@@ -15,6 +15,6 @@
 	#include "vector.class.hpp"
 #endif
 
-int vector_test();
+void	vector_test();
 
 #endif

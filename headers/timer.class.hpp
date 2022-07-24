@@ -5,6 +5,7 @@
 
 #include <time.h>
 #include <iostream>
+#include "colors.hpp"
 
 class timer
 {

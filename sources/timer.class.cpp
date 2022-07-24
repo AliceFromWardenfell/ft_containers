@@ -12,7 +12,9 @@ timer::~timer()
 	int lifetime = m_end.tv_nsec - m_start.tv_nsec;
 
 	std::cout	<< "Execution time: "
+				<< CLR_WHITE
 				<< m_convert_to_microseconds(lifetime)
+				<< CLR_DEFAULT
 				<< " us"
 				<< std::endl;
 }

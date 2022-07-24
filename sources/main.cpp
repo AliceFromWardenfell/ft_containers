@@ -1,55 +1,34 @@
 #include "main.hpp"
 
-// mb move to utils.cpp
-static void	print_code_synopsis(const char* synopsis, int code, const char* color)
+static void	test_containers()
 {
-	std::cout	<< color
-				<< "#"
-				<< code
-				<< ": "
-				<< CLR_WHITE
-				<< synopsis
-				<< CLR_DEFAULT
-				<< std::endl;
-}
+	#ifdef STL_TEST
+		print_colored_caption("STL containers test:", CLR_GREEN);
+	#else
+		print_colored_caption("FT containers test:", CLR_GREEN);
+	#endif
 
-static void	handle_result(int code)
-{
-	switch (code)
-	{
-		case OK:
-			print_code_synopsis("No errors", code, CLR_GREEN);
-			break;
-		case CONT_ERR:
-			print_code_synopsis("Error in container", code, CLR_RED);
-			break;
-		case TESTER_ERR:
-			print_code_synopsis("Error in tester", code, CLR_RED);
-			break;
-		// ...
-	}
-}
-
-static int	test_containers()
-{
-	int result = 0;
-
-	print_colored_caption("Containers test:", CLR_GREEN);
-
-	result = vector_test();
-	// error_code = map_test();
-	// error_code = stack_test();
+	vector_test();
+	// map_test();
+	// stack_test();
 	// ...
 
-	return result;
 }
 
 int	main()
 {
-	int result = 0;
-
-	result = test_containers();
-	handle_result(result);
-
-	return result;
+	/*
+	 *	Try to catch serious internal problems.
+	 *	Ordinary test errors are handled in corresponding test functions.
+	 */
+	try
+	{
+		test_containers();
+	}
+	catch(...)
+	{
+		// handle exceptions
+	}
+	
+	return 0;
 }
