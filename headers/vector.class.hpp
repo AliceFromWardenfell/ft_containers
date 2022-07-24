@@ -58,7 +58,7 @@ class vector : protected base_vector<T, Allocator>
 			const allocator_type& allocator = allocator_type())
 		:	base_type(check_init_len(size), allocator)
 		{
-			std::cout << "vector: " << "size+val+alloc constructor" << std::endl; // debug
+			std::cout << "vector: " << "size&val&alloc constructor" << std::endl; // debug
 			fill_value_size_times(m_ptr_start, size, value);
 		}
 
@@ -66,7 +66,11 @@ class vector : protected base_vector<T, Allocator>
 		vector(InputIterator first, InputIterator last,
 			const allocator_type& allocator = allocator_type());
 
-		vector(const vector& instance);
+		vector(const vector& instance)
+		:	base_type(instance.size(), instance.get_allocator())
+		{
+			copy_elements(instance.begin(), instance.end(), m_ptr_start);
+		}
 
 		vector& operator=(const vector& instance);
 
@@ -76,7 +80,8 @@ class vector : protected base_vector<T, Allocator>
 
 	/* Capacity */
 
-		size_type size() const throw();
+		size_type size() const throw()
+		{ return size_type(m_ptr_finish - m_ptr_start); }
 
 		size_type max_size() const throw();
 
@@ -178,7 +183,7 @@ class vector : protected base_vector<T, Allocator>
 		}
 
 		template <typename iter, typename size, typename V>
-		inline void fill_value_size_times(iter start, size n, const V& val)
+		void fill_value_size_times(iter start, size n, const V& val)
 		{
 			iter current_pos = start;
 
@@ -193,6 +198,24 @@ class vector : protected base_vector<T, Allocator>
 			catch(...)
 			{
 				std::_Destroy(start, current_pos);
+				throw;
+			}
+		}
+
+		template<typename it_start, typename it_finish>
+		void copy_elements(it_start start, it_start finish, it_finish result)
+		{
+			it_finish current_pos = result;
+
+			try
+			{
+				for (; start != finish; ++start, (void)++current_pos)
+				std::_Construct(std::__addressof(*current_pos), *start);
+				m_ptr_finish = current_pos;
+			}
+			catch(...)
+			{
+				std::_Destroy(result, current_pos);
 				throw;
 			}
 		}
