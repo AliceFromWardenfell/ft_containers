@@ -9,13 +9,6 @@
 
 #include "vector.test.hpp"
 
-#ifdef STL_TEST
-	namespace ft = std;
-	#include <vector>
-#else
-	#include "vector.class.hpp"
-#endif
-
 // handle_result codes
 #define OK 0
 #define CONT_ERR 1
