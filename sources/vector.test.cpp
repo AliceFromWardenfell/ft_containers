@@ -14,6 +14,7 @@ static int constructors_test()
 	
 	{
 		ft::vector<int> arr;
+		std::cout << "size = " << arr.size() << std::endl;
 	}
 	std::cout << std::endl;
 	{
@@ -38,6 +39,7 @@ static int constructors_test()
 
 		std::allocator<Human> alloc;
 		ft::vector<Human, std::allocator<Human> > arr(20, greg, alloc);
+		std::cout << "size = " << arr.size() << std::endl;
 	}
 	std::cout << std::endl;
 
@@ -65,11 +67,26 @@ int	vector_test()
 	print_colored_caption("Vector test:", CLR_VIOLET);
 	std::cout << std::endl;
 
+	/* array of function pointers */
+	int (*vector_test_func[])() =
+	{
+		constructors_test,
+		iterators_test
+	};
+	const size_t amount_of_tests =	sizeof(vector_test_func) /
+									sizeof(*vector_test_func);
+
 	int result = 0;
-	result = constructors_test();
-	result = iterators_test();
-	// ...
+	int score = 0;
+	for (size_t i = 0; i < amount_of_tests; i++)
+	{
+		if ((result = vector_test_func[i]()))
+			return result;
+		score++;
+
+	}
 	
+	print_score(score, amount_of_tests);
 	std::cout << std::endl;
 
 	return result;
