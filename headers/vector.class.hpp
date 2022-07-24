@@ -59,7 +59,7 @@ class vector : protected base_vector<T, Allocator>
 		:	base_type(check_init_len(size), allocator)
 		{
 			std::cout << "vector: " << "size+val+alloc constructor" << std::endl; // debug
-			uninitialized_fill_n(m_ptr_start, size, value);
+			fill_value_size_times(m_ptr_start, size, value);
 		}
 
 		template<typename InputIterator>
@@ -177,21 +177,8 @@ class vector : protected base_vector<T, Allocator>
 		}
 
 		template <typename iter, typename size, typename V>
-		inline void uninitialized_fill_n(iter start, size n, const V& val)
+		inline void fill_value_size_times(iter start, size n, const V& val)
 		{
-			//typedef typename ft::iterator_traits<iter>::value_type value_type;
-			
-			// static_assert(std::is_constructible<value_type, const T&>::value,
-			// 				"Value type has to be constructible");
-			// if (std::is_copy_assignable<value_type>::value) { m_ptr_finish = ... }
-			
-			m_ptr_finish = uninitialized_fill_n_impl(start, n, val);
-		}
-
-		template <typename iter, typename size, typename Vi>
-		iter uninitialized_fill_n_impl(iter start, size n, const Vi& val) // mb combine with upper one
-		{
-			//typedef typename ft::iterator_traits<iter>::value_type value_type;
 			iter current_pos = start;
 
 			try
@@ -199,14 +186,11 @@ class vector : protected base_vector<T, Allocator>
 				for(; n > 0; --n, ++current_pos)
 				{
 					std::_Construct(std::__addressof(*current_pos), val);
-					//::new((void*)std::__addressof(*current_pos)) value_type(val); 
 				}
-				return current_pos;
+				m_ptr_finish = current_pos;
 			}
 			catch(...)
 			{
-				//for(; start < current_pos; ++start)
-				//	(*start).~value_type();
 				std::_Destroy(start, current_pos);
 				throw;
 			}
