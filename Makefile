@@ -1,4 +1,5 @@
 NAME		:= MyContainers.exe
+NAME_STL	:= STLContainers.exe
 
 CC			:= c++
 CFLAGS		:= -Wall -Wextra -Werror -std=c++98
@@ -10,25 +11,34 @@ vpath %.cpp	$(SRCS_DIR)
 vpath %.hpp	$(HDRS_DIR)
 INCLUDES	:= -I$(HDRS_DIR)
 
-SRCS		:= main.cpp
+SRCS		:=	main.cpp \
+				utils.cpp \
+				timer.class.cpp \
+				vector.test.cpp
+
+FT_PREFIX	:= ft_
+STL_PREFIX	:= stl_
 
 OBJS_DIR	:= .objects
-OBJS		:= $(SRCS:%.cpp=$(OBJS_DIR)/%.o)
+OBJ_PREFIX	:= $(FT_PREFIX)
+OBJS		:= $(SRCS:%.cpp=$(OBJS_DIR)/$(OBJ_PREFIX)%.o)
 
-DEPS		:= $(SRCS:%.cpp=$(OBJS_DIR)/%.d)
+DEPS		:= $(SRCS:%.cpp=$(OBJS_DIR)/$(OBJ_PREFIX)%.d)
 
 all:
 					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME)'$(BOLD):$(DEF)"
 					@$(MAKE) --no-print-directory $(NAME)
+					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME_STL)'$(BOLD):$(DEF)"
+					@$(MAKE) --no-print-directory NAME=$(NAME_STL) CFLAGS+=" -D STL_TEST" OBJ_PREFIX=$(STL_PREFIX) $(NAME_STL)
 
 $(NAME):			$(OBJS)
 					@echo "$(BOLD)Linking files...$(DEF)"
 					@$(CC) $(OBJS) $(CFLAGS) $(INCLUDES) -o $@
 					@echo "$(WHITE_B)'$(NAME)'$(BOLD) has been created/updated.$(DEF)"
 
-$(OBJS_DIR)/%.o:	%.cpp | $(OBJS_DIR) 
-					@echo "Assembling $<..."
-					@$(CC) $(CFLAGS) $(DEP_FLAGS) $(INCLUDES) -c $< -o $@
+$(OBJS_DIR)/$(OBJ_PREFIX)%.o:	%.cpp | $(OBJS_DIR)
+								@echo "Assembling $<..."
+								@$(CC) $(CFLAGS) $(DEP_FLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJS_DIR):
 					@mkdir -p $@
@@ -37,10 +47,12 @@ $(OBJS_DIR):
 clean:
 					@rm -rf $(OBJS) $(DEPS) $(OBJS_DIR)
 					@echo "$(WHITE)$(NAME): $(BOLD)Object files have been cleaned.$(DEF)"
+					@echo "$(WHITE)$(NAME_STL): $(BOLD)Object files have been cleaned.$(DEF)"
 
 fclean:				clean
-					@rm -rf $(NAME)
+					@rm -rf $(NAME) $(NAME_STL)
 					@echo "$(WHITE)'$(NAME)'$(BOLD) has been cleaned.$(DEF)"
+					@echo "$(WHITE)'$(NAME_STL)'$(BOLD) has been cleaned.$(DEF)"
 
 re:					fclean all
 
