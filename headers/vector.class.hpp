@@ -4,6 +4,9 @@
 #pragma once
 
 #include <memory>
+#include <algorithm> // for std::min, mb create own
+#include <stdint.h> // for PTRDIFF_MAX
+
 #include "base_vector.class.hpp"
 #include "iterator.hpp"
 
@@ -45,14 +48,19 @@ class vector : protected base_vector<T, Allocator>
 			std::cout << "vector: " << "default constructor" << std::endl; // debug
 		}
 
-		explicit vector(const allocator_type& allocator)
+		explicit vector(const allocator_type& allocator) throw()
 		:	base_type(allocator)
 		{
 			std::cout << "vector: " << "allocator constructor" << std::endl; // debug
 		}
 
 		explicit vector(size_type size, const value_type& value = value_type(),
-			const allocator_type& allocator = allocator_type());
+			const allocator_type& allocator = allocator_type())
+		:	base_type(check_init_len(size), allocator)
+		{
+			std::cout << "vector: " << "size+val+alloc constructor" << std::endl; // debug
+			uninitialized_fill_n(m_ptr_start, size, value);
+		}
 
 		template<typename InputIterator>
 		vector(InputIterator first, InputIterator last,
@@ -153,6 +161,56 @@ class vector : protected base_vector<T, Allocator>
 	protected:
 
 		void check_range(size_type size) const;
+
+		size_type check_init_len(size_type size) const
+		{
+			if (size > potential_size())
+				throw std::length_error("cannot create ft::vector larger than max_size()");
+			return size;
+		}
+
+		size_type potential_size() const throw()
+		{
+			const size_t ptrdiff_max = PTRDIFF_MAX / sizeof(value_type);
+			const size_t allocator_max = allocator_type::max_size();
+			return std::min(ptrdiff_max, allocator_max); // mb replace on ? operator to get rid of <algorithm>
+		}
+
+		template <typename iter, typename size, typename V>
+		inline void uninitialized_fill_n(iter start, size n, const V& val)
+		{
+			//typedef typename ft::iterator_traits<iter>::value_type value_type;
+			
+			// static_assert(std::is_constructible<value_type, const T&>::value,
+			// 				"Value type has to be constructible");
+			// if (std::is_copy_assignable<value_type>::value) { m_ptr_finish = ... }
+			
+			m_ptr_finish = uninitialized_fill_n_impl(start, n, val);
+		}
+
+		template <typename iter, typename size, typename Vi>
+		iter uninitialized_fill_n_impl(iter start, size n, const Vi& val) // mb combine with upper one
+		{
+			//typedef typename ft::iterator_traits<iter>::value_type value_type;
+			iter current_pos = start;
+
+			try
+			{
+				for(; n > 0; --n, ++current_pos)
+				{
+					std::_Construct(std::__addressof(*current_pos), val);
+					//::new((void*)std::__addressof(*current_pos)) value_type(val); 
+				}
+				return current_pos;
+			}
+			catch(...)
+			{
+				//for(; start < current_pos; ++start)
+				//	(*start).~value_type();
+				std::_Destroy(start, current_pos);
+				throw;
+			}
+		}
 
 }; // class vector
 

@@ -28,7 +28,7 @@ struct base_vector
 			std::cout << "VectorBase: " << "default constructor" << std::endl; // debug
 		}
 
-		base_vector(const allocator_type& allocator)
+		base_vector(const allocator_type& allocator) throw()
 		:	m_ptr_start(NULL),
 			m_ptr_finish(NULL),
 			m_ptr_end_of_storage(NULL),
@@ -51,7 +51,7 @@ struct base_vector
 			std::cout << "VectorBase: " << "allocator&size constructor" << std::endl; // debug
 		}
 
-		~base_vector()
+		~base_vector() throw()
 		{
 			m_deallocate(m_ptr_start, m_ptr_end_of_storage - m_ptr_start);
 			std::cout << "VectorBase: " << "destructor" << std::endl; // debug
