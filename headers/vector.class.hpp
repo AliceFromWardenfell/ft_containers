@@ -69,12 +69,16 @@ class vector : protected base_vector<T, Allocator>
 		vector(const vector& instance)
 		:	base_type(instance.size(), instance.get_allocator())
 		{
+			std::cout << "vector: " << "copy constructor" << std::endl; // debug
 			copy_elements(instance.begin(), instance.end(), m_ptr_start);
 		}
 
 		vector& operator=(const vector& instance);
 
-		~vector() { }
+		~vector()
+		{
+			std::cout << "vector: " << "destructor" << std::endl; // debug
+		}
 
 	public:
 
@@ -95,7 +99,8 @@ class vector : protected base_vector<T, Allocator>
 
 	/* Element access */
 
-		reference operator[](size_type index) throw();
+		reference operator[](size_type index) throw()
+		{ return *(m_ptr_start + index); }
 
 		const_reference operator[](size_type index) const throw();
 
