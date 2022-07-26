@@ -10,8 +10,6 @@ struct Human
 
 static int default_constructor_test()
 {
-	timer perfomance;
-
 	print_colored_caption("Default constructor test:", CLR_YELLOW);
 
 	{
@@ -28,8 +26,6 @@ static int default_constructor_test()
 
 static int allocator_constructor_test()
 {
-	timer perfomance;
-
 	print_colored_caption("Allocator constructor test:", CLR_YELLOW);
 
 	{
@@ -47,8 +43,6 @@ static int allocator_constructor_test()
 
 static int size_and_val_constructor_test()
 {
-	timer perfomance;
-
 	print_colored_caption("Size&value constructor test:", CLR_YELLOW);
 
 	{
@@ -76,8 +70,6 @@ static int size_and_val_constructor_test()
 
 static int iterators_test()
 {
-	timer perfomance;
-
 	print_colored_caption("Iterators test:", CLR_YELLOW);
 
 	return 0;
@@ -100,11 +92,14 @@ void	vector_test() // mb turn into class
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
 									sizeof(*vector_test_func);
 
+	int result;
 	int score = 0;
 	for (size_t i = 0; i < amount_of_tests; i++)
 	{
-		int result = vector_test_func[i]();
-		
+		{
+			timer perfomance;
+			result = vector_test_func[i]();
+		}
 		if (result == OK)
 			score++;
 		handle_result(result);
