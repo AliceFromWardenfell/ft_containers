@@ -62,9 +62,9 @@ class vector : protected base_vector<T, Allocator>
 			fill_value_size_times(m_ptr_start, size, value);
 		}
 
-		template<typename InputIterator>
-		vector(InputIterator first, InputIterator last,
-			const allocator_type& allocator = allocator_type());
+		// template<typename InputIterator>
+		// vector(InputIterator first, InputIterator last,
+		// 	const allocator_type& allocator = allocator_type());
 
 		vector(const vector& instance)
 		:	base_type(instance.size(), instance.get_allocator())
@@ -120,8 +120,8 @@ class vector : protected base_vector<T, Allocator>
 
 		void assign(size_type size, const value_type& value);
 
-		template<typename InputIterator>
-		void assign(InputIterator first, InputIterator last);
+		template<typename iter>
+		void assign(iter first, iter last);
 
 		void push_back(const value_type& value);
 
@@ -131,8 +131,8 @@ class vector : protected base_vector<T, Allocator>
 
 		void insert(iterator position, size_type amount, const value_type& value);
 
-		template<typename InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last);
+		template<typename iter>
+		void insert(iterator position, iter first, iter last);
 
 		iterator erase(iterator position);
 

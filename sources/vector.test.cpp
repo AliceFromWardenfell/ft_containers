@@ -88,18 +88,11 @@ static int size_test()
 {
 	print_colored_caption("Size test:", CLR_YELLOW);
 
-	//ft::vector<int> arr(125, 0);
-	//std::cout << "Size = " << arr.size() << std::endl;
+	ft::vector<int> arr(125, 0);
+	std::cout << "Size = " << arr.size() << std::endl;
 
 	return 0;
 }
-
-// static int default_constructor_test()
-// {
-// 	print_colored_caption("Constructors test:", CLR_YELLOW);
-
-// 	return 0;
-// }
 
 static int iterators_test()
 {
