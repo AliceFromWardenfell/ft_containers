@@ -13,9 +13,8 @@ static int default_constructor_test()
 
 	{
 		ft::vector<int> arr;
-		std::cout << "size = " << arr.size() << std::endl;
+		std::cout << "Size = " << arr.size() << std::endl;
 	}
-	std::cout << std::endl;
 	{
 		ft::vector<Human> arr;
 	}
@@ -31,7 +30,6 @@ static int allocator_constructor_test()
 		std::allocator<int> alloc;
 		ft::vector<int, std::allocator<int> > arr(alloc);
 	}
-	std::cout << std::endl;
 	{
 		std::allocator<Human> alloc;
 		ft::vector<Human, std::allocator<Human> > arr(alloc);
@@ -86,7 +84,7 @@ static int copy_constructor_test()
 
 static int size_test()
 {
-	print_colored_caption("Size test:", CLR_YELLOW);
+	print_colored_caption("Size() test:", CLR_YELLOW);
 
 	ft::vector<int> arr(125, 0);
 	std::cout << "Size = " << arr.size() << std::endl;
@@ -94,12 +92,41 @@ static int size_test()
 	return 0;
 }
 
-static int iterators_test()
+static int push_back_test()
 {
-	print_colored_caption("Iterators test:", CLR_YELLOW);
+	print_colored_caption("Push_back() test:", CLR_YELLOW);
+
+	ft::vector<int> arr;
+	
+	std::cout	<< "Size = "
+				<< arr.size()
+				<< std::endl;
+	
+	arr.push_back(3);
+	arr.push_back(88);
+	arr.push_back(0);
+	arr.push_back(-6);
+
+	std::cout	<< "Size = "
+				<< arr.size()
+				<< std::endl;
+
+	std::cout << "Array: ";
+	for(size_t i = 0; i < arr.size(); i++)
+	{
+		std::cout << arr[i] << " ";
+	}
+	std::cout << std::endl;
 
 	return 0;
 }
+
+// static int iterators_test()
+// {
+// 	print_colored_caption("Iterators test:", CLR_YELLOW);
+
+// 	return 0;
+// }
 
 void	vector_test() // mb turn into class
 {
@@ -114,7 +141,7 @@ void	vector_test() // mb turn into class
 		allocator_constructor_test,
 		size_and_val_constructor_test,
 		copy_constructor_test,
-		iterators_test,
+		push_back_test,
 		size_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /

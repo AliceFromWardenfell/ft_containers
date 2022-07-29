@@ -3,7 +3,10 @@
 
 #include "iterator.hpp"
 
-template <typename iter>
+namespace ft
+{
+
+template<typename iter>
 inline typename ft::iterator_traits<iter>::difference_type
 distance(iter start, iter finish)
 {
@@ -73,5 +76,7 @@ struct is_integral<long long>
 template<>
 struct is_integral<unsigned long long>
 { static const bool value = true; };
+
+} // namespace ft
 
 #endif
