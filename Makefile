@@ -12,7 +12,7 @@ vpath %.hpp	$(HDRS_DIR)
 INCLUDES	:= -I$(HDRS_DIR)
 
 SRCS		:=	main.cpp \
-				utils.cpp \
+				test_utils.cpp \
 				timer.class.cpp \
 				vector.test.cpp
 
