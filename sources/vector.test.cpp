@@ -131,6 +131,78 @@ static int iterator_constructor_test()
 	return 0;
 }
 
+static int iterators_test()
+{
+	print_colored_caption("Iterators test:", CLR_YELLOW);
+
+	ft::vector<int> arr;
+	std::cout << "Base array: ";
+	for (size_t i = 0; i < 9; i++)
+	{
+		arr.push_back((i + 1) * 11);
+		std::cout << arr[i] << " ";
+	}
+	std::cout << std::endl;
+	{ /* normal iterator */
+		typedef ft::vector<int>::iterator normal_it;
+		normal_it it_begin(arr.begin());
+
+		std::cout	<< "begin: "
+					<< *it_begin
+					<< std::endl;
+		
+		std::cout << "Normal array: ";
+		while (it_begin != arr.end())
+			std::cout << *it_begin++ << " ";
+		std::cout << std::endl;
+	} /* normal const iterator */
+	/* Have to make it -> const it conversion
+	{	
+		typedef ft::vector<int>::const_iterator const_normal_it;
+		const_normal_it it_begin(arr.begin());
+
+		std::cout	<< "begin: "
+					<< *it_begin
+					<< std::endl;
+		
+		std::cout << "Const normal array: ";
+		while (it_begin != arr.rend())
+			std::cout << *it_begin++ << " ";
+		std::cout << std::endl;
+	}
+	*/
+	{ /* reverse iterator */
+		typedef ft::vector<int>::reverse_iterator reverse_it;
+		reverse_it it_begin(arr.rbegin());
+
+		std::cout	<< "begin: "
+					<< *it_begin
+					<< std::endl;
+
+		std::cout << "Reverse array: ";
+		while (it_begin != arr.rend())
+			std::cout << *it_begin++ << " ";
+		std::cout << std::endl;
+	}
+	/* Have to make it -> const it conversion
+	{ // reverse const iterator
+		typedef ft::vector<int>::const_reverse_iterator const_reverse_it;
+		const_reverse_it it_begin(arr.rbegin());
+
+		std::cout	<< "begin: "
+					<< *it_begin
+					<< std::endl;
+
+		std::cout << "Const reverse array: ";
+		while (it_begin != arr.rend())
+			std::cout << *it_begin++ << " ";
+		std::cout << std::endl;
+	}
+	*/
+
+	return 0;
+}
+
 static int size_test()
 {
 	print_colored_caption("Size() test:", CLR_YELLOW);
@@ -170,31 +242,6 @@ static int push_back_test()
 	return 0;
 }
 
-// static int iterators_test()
-// {
-// 	print_colored_caption("Iterators test:", CLR_YELLOW);
-
-	// ft::vector<int> arr;
-	// std::cout << "Base array: ";
-	// for (size_t i = 0; i < 10; i++)
-	// {
-	// 	arr.push_back((int)rand() % 10);
-	// 	std::cout << arr[i] << " ";
-	// }
-	// std::cout << std::endl;
-	
-	// ft::vector<int>::iterator it_first(&arr[2]);
-	// ft::vector<int>::iterator it_last(&arr[8]);
-
-	// std::cout	<< "first: "
-	// 			<< *it_first
-	// 			<< "; last: "
-	// 			<< *it_last
-	// 			<< std::endl;
-
-// 	return 0;
-// }
-
 void	vector_test() // mb turn into class
 {
 	std::cout << std::endl;
@@ -209,6 +256,7 @@ void	vector_test() // mb turn into class
 		size_and_val_constructor_test,
 		copy_constructor_test,
 		iterator_constructor_test,
+		iterators_test,
 		push_back_test,
 		size_test
 	};
