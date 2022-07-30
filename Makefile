@@ -31,6 +31,14 @@ all:
 					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME_STL)'$(BOLD):$(DEF)"
 					@$(MAKE) --no-print-directory NAME=$(NAME_STL) CFLAGS+=" -D STL_TEST" OBJ_PREFIX=$(STL_PREFIX) $(NAME_STL)
 
+ft:
+					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME)'$(BOLD):$(DEF)"
+					@$(MAKE) --no-print-directory $(NAME)
+
+stl:
+					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME_STL)'$(BOLD):$(DEF)"
+					@$(MAKE) --no-print-directory NAME=$(NAME_STL) CFLAGS+=" -D STL_TEST" OBJ_PREFIX=$(STL_PREFIX) $(NAME_STL)
+
 $(NAME):			$(OBJS)
 					@echo "$(BOLD)Linking files...$(DEF)"
 					@$(CC) $(OBJS) $(CFLAGS) $(INCLUDES) -o $@
