@@ -82,6 +82,55 @@ static int copy_constructor_test()
 	return 0;
 }
 
+static int iterator_constructor_test()
+{
+	print_colored_caption("Iterator constructor test:", CLR_YELLOW);
+
+	{
+		ft::vector<int> arr;
+		std::cout << "Base array: ";
+		for (size_t i = 0; i < 9; i++)
+		{
+			arr.push_back((i + 1) * 11);
+			std::cout << arr[i] << " ";
+		}
+		std::cout << std::endl;
+		
+		typedef ft::vector<int>::iterator vector_it;
+		vector_it it_first(&arr[2]);
+		vector_it it_last(&arr[7]);
+
+		ft::vector<int> range_arr(it_first, it_last);
+		std::cout << "Range array: ";
+		for (size_t i = 0; i < range_arr.size(); i++)
+			std::cout << range_arr[i] << " ";
+		std::cout << std::endl;
+	}
+	{
+		ft::vector<Human> arr;
+		std::cout << "Base ages array: ";
+		for (size_t i = 0; i < 9; i++)
+		{
+			arr.push_back(Human());
+			arr[i].age = rand() % 70 + 1;
+			std::cout << arr[i].age << " ";
+		}
+		std::cout << std::endl;
+		
+		typedef ft::vector<Human>::iterator vector_it;
+		vector_it it_first(&arr[2]);
+		vector_it it_last(&arr[7]);
+
+		ft::vector<Human> range_arr(it_first, it_last);
+		std::cout << "Range ages array: ";
+		for (size_t i = 0; i < range_arr.size(); i++)
+			std::cout << range_arr[i].age << " ";
+		std::cout << std::endl;
+	}
+
+	return 0;
+}
+
 static int size_test()
 {
 	print_colored_caption("Size() test:", CLR_YELLOW);
@@ -125,6 +174,24 @@ static int push_back_test()
 // {
 // 	print_colored_caption("Iterators test:", CLR_YELLOW);
 
+	// ft::vector<int> arr;
+	// std::cout << "Base array: ";
+	// for (size_t i = 0; i < 10; i++)
+	// {
+	// 	arr.push_back((int)rand() % 10);
+	// 	std::cout << arr[i] << " ";
+	// }
+	// std::cout << std::endl;
+	
+	// ft::vector<int>::iterator it_first(&arr[2]);
+	// ft::vector<int>::iterator it_last(&arr[8]);
+
+	// std::cout	<< "first: "
+	// 			<< *it_first
+	// 			<< "; last: "
+	// 			<< *it_last
+	// 			<< std::endl;
+
 // 	return 0;
 // }
 
@@ -141,6 +208,7 @@ void	vector_test() // mb turn into class
 		allocator_constructor_test,
 		size_and_val_constructor_test,
 		copy_constructor_test,
+		iterator_constructor_test,
 		push_back_test,
 		size_test
 	};

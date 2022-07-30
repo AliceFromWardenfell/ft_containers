@@ -68,7 +68,6 @@ class vector : protected base_vector<T, Allocator>
 
 		template<typename iter>
 		vector(iter first, iter last,
-			const allocator_type& allocator = allocator_type(),
 			typename ft::enable_if<!ft::is_integral<iter>::value, bool>::type* = NULL)
 		{
 			typedef typename ft::iterator_traits<iter>::iterator_category it_tag;
@@ -253,16 +252,18 @@ class vector : protected base_vector<T, Allocator>
 			m_ptr_end_of_storage = m_ptr_start + new_capacity;
 		}
 
-		// template <typename iter>
-		// inline void range_init(iter start, iter finish, std::input_iterator_tag)
-		// {
-		// 	for(; start != finish; ++start)
-		// 	push_back(*start);
-		// }
+		template <typename iter>
+		inline void range_init(iter start, iter finish, std::input_iterator_tag)
+		{
+			std::cout << "range_init: input_iterator_tag" << std::endl; // debug
+			for(; start != finish; ++start)
+				push_back(*start);
+		}
 
 		template <typename iter>
 		inline void range_init(iter start, iter finish, std::forward_iterator_tag)
 		{
+			std::cout << "range_init: forward_iterator_tag" << std::endl; // debug
 			const size_type size = (size_type)ft::distance(start, finish);
 			m_ptr_start = m_allocate(check_init_len(size));
 			m_ptr_end_of_storage = m_ptr_start + size;
