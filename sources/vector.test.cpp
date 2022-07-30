@@ -131,6 +131,27 @@ static int iterator_constructor_test()
 	return 0;
 }
 
+static int destructor_test()
+{
+	print_colored_caption("Destructor test:", CLR_YELLOW);
+
+	{ /* memory leaks test */
+		ft::vector<char*> arr(10, NULL);
+		for (size_t i = 0; i < arr.size(); i++)
+		{
+			arr[i] = ::new char[i];
+			size_t j = i;
+			arr[i][j] = '\0';
+			while (j--)
+				arr[i][j] = '*';
+			std::cout << arr[i] << std::endl;
+		}
+	}
+	std::cout << "Has to be memory leaks in 10 blocks" << std::endl;
+
+	return 0;
+}
+
 static int iterators_test()
 {
 	print_colored_caption("Iterators test:", CLR_YELLOW);
@@ -256,6 +277,7 @@ void	vector_test() // mb turn into class
 		size_and_val_constructor_test,
 		copy_constructor_test,
 		iterator_constructor_test,
+		destructor_test,
 		iterators_test,
 		push_back_test,
 		size_test

@@ -81,11 +81,20 @@ class vector : protected base_vector<T, Allocator>
 			copy_elements(instance.begin(), instance.end(), m_ptr_start);
 		}
 
-		vector& operator=(const vector& instance);
+		// vector& operator=(const vector& instance)
+		// {
+		// 	if (&instance == this)
+		// 		return *this;
 
-		~vector()
+
+
+		// 	return *this;
+		// }
+
+		~vector() throw()
 		{
 			std::cout << "vector: " << "destructor" << std::endl; // debug
+			std::_Destroy(m_ptr_start, m_ptr_finish, m_allocator);
 		}
 
 	public:
