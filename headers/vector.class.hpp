@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <memory>
 #include <algorithm> // for std::min, mb create own
 #include <stdint.h> // for PTRDIFF_MAX
 
@@ -47,24 +46,15 @@ class vector : protected base_vector<T, Allocator>
 
 	public:
 
-		vector()
-		{
-			std::cout << "vector: " << "default constructor" << std::endl; // debug
-		}
+		vector() { }
 
 		explicit vector(const allocator_type& allocator) throw()
-		:	base_type(allocator)
-		{
-			std::cout << "vector: " << "allocator constructor" << std::endl; // debug
-		}
+		:	base_type(allocator) { }
 
 		explicit vector(size_type size, const value_type& value = value_type(),
 			const allocator_type& allocator = allocator_type())
 		:	base_type(check_init_len(size), allocator)
-		{
-			std::cout << "vector: " << "size&val&alloc constructor" << std::endl; // debug
-			fill_value_size_times(m_ptr_start, size, value);
-		}
+		{ fill_value_size_times(m_ptr_start, size, value); }
 
 		template<typename iter>
 		vector(iter first, iter last,
@@ -76,28 +66,19 @@ class vector : protected base_vector<T, Allocator>
 
 		vector(const vector& instance)
 		:	base_type(instance.size(), instance.get_allocator())
-		{
-			std::cout << "vector: " << "copy constructor" << std::endl; // debug
-			copy_elements(instance.begin(), instance.end(), m_ptr_start);
-		}
+		{ copy_elements(instance.begin(), instance.end(), m_ptr_start); }
 
 		vector& operator=(const vector& instance)
 		{
-			if (&instance == this)
-				return *this;
+			if (&instance == this) return *this;
 
-			this->~vector();
-			// Think how to send actual iterator tag
-			range_init(instance.begin(), instance.end(), std::forward_iterator_tag());
-
+			base_type::~base_type();
+			range_init(instance.begin(), instance.end(), std::forward_iterator_tag()); // Think how to send actual iterator tag
+			
 			return *this;
 		}
 
-		~vector() throw()
-		{
-			std::cout << "vector: " << "destructor" << std::endl; // debug
-			std::_Destroy(m_ptr_start, m_ptr_finish, m_allocator);
-		}
+		~vector() throw() { }
 
 	public:
 
@@ -216,15 +197,14 @@ class vector : protected base_vector<T, Allocator>
 
 			try
 			{
-				for(; n > 0; --n, ++current_pos)
-				{
-					std::_Construct(std::__addressof(*current_pos), val);
-				}
+				for (; n > 0; --n, ++current_pos)
+					m_allocator.construct(current_pos, val);
 				m_ptr_finish = current_pos;
 			}
 			catch(...)
 			{
-				std::_Destroy(start, current_pos);
+				while (start++ != current_pos)
+					m_allocator.destroy(start);
 				throw;
 			}
 		}
@@ -237,12 +217,13 @@ class vector : protected base_vector<T, Allocator>
 			try
 			{
 				for (; start != finish; ++start, (void)++current_pos)
-				std::_Construct(std::__addressof(*current_pos), *start);
+					m_allocator.construct(current_pos, *start);
 				m_ptr_finish = current_pos;
 			}
 			catch(...)
 			{
-				std::_Destroy(result, current_pos);
+				while (result++ != current_pos)
+					m_allocator.destroy(result);
 				throw;
 			}
 		}
@@ -266,7 +247,6 @@ class vector : protected base_vector<T, Allocator>
 		template <typename iter>
 		inline void range_init(iter start, iter finish, std::input_iterator_tag)
 		{
-			std::cout << "range_init: input_iterator_tag" << std::endl; // debug
 			for(; start != finish; ++start)
 				push_back(*start);
 		}
@@ -274,14 +254,12 @@ class vector : protected base_vector<T, Allocator>
 		template <typename iter>
 		inline void range_init(iter start, iter finish, std::forward_iterator_tag)
 		{
-			std::cout << "range_init: forward_iterator_tag" << std::endl; // debug
 			const size_type size = (size_type)ft::distance(start, finish);
 			m_ptr_start = m_allocate(check_init_len(size));
 			m_ptr_end_of_storage = m_ptr_start + size;
 			m_ptr_finish = m_ptr_end_of_storage;
 
-			// mb need to remove const from m_ptr_start
-			copy_elements(start, finish, m_ptr_start);
+			copy_elements(start, finish, m_ptr_start); // mb need to remove const from m_ptr_start
 		}
 
 }; // class vector	

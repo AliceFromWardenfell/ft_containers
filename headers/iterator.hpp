@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <iterator>
 #include <cstddef>
 #include "traits.hpp"
 
