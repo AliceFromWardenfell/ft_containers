@@ -4,7 +4,6 @@
 #pragma once
 
 #include <memory>
-#include <iostream> // debug
 
 namespace ft
 {
@@ -23,44 +22,27 @@ struct base_vector
 		:	m_ptr_start(NULL),
 			m_ptr_finish(NULL),
 			m_ptr_end_of_storage(NULL),
-			m_allocator(std::allocator<value_type>())
-		{
-			std::cout << "VectorBase: " << "default constructor" << std::endl; // debug
-		}
+			m_allocator(std::allocator<value_type>()) { }
 
 		base_vector(const allocator_type& allocator) throw()
 		:	m_ptr_start(NULL),
 			m_ptr_finish(NULL),
 			m_ptr_end_of_storage(NULL),
-			m_allocator(allocator)
-		{
-			std::cout << "VectorBase: " << "allocator constructor" << std::endl; // debug
-		}
+			m_allocator(allocator) { }
 
 		base_vector(size_type size)
 		:	m_allocator(std::allocator<value_type>())
-		{
-			m_create_storage(size);
-			std::cout << "VectorBase: " << "size constructor" << std::endl; // debug
-		}
+		{ m_create_storage(size); }
 
 		base_vector(size_type size, const allocator_type& allocator)
 		:	m_allocator(allocator)
-		{
-			m_create_storage(size);
-			std::cout << "VectorBase: " << "allocator&size constructor" << std::endl; // debug
-		}
+		{ m_create_storage(size); }
 
 		~base_vector() throw()
-		{
-			m_deallocate(m_ptr_start, m_ptr_end_of_storage - m_ptr_start);
-			std::cout << "VectorBase: " << "destructor" << std::endl; // debug
-		}
+		{ m_deallocate(m_ptr_start, m_ptr_end_of_storage - m_ptr_start); }
 
 		allocator_type	get_allocator() const throw()
-		{
-			return m_allocator;
-		}
+		{ return m_allocator; }
 
 	protected:
 
