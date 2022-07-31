@@ -217,12 +217,13 @@ class vector : protected base_vector<T, Allocator>
 			try
 			{
 				for (; start != finish; ++start, (void)++current_pos)
-				std::_Construct(std::__addressof(*current_pos), *start);
+					m_allocator.construct(current_pos, *start);
 				m_ptr_finish = current_pos;
 			}
 			catch(...)
 			{
-				std::_Destroy(result, current_pos);
+				while (result++ != current_pos)
+					m_allocator.destroy(result);
 				throw;
 			}
 		}
