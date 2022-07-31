@@ -1,18 +1,15 @@
 #ifndef TRAITS_HPP
 #define TRAITS_HPP
 
-#include "iterator.hpp"
+#include <typeinfo>
 
-template <typename iter>
-inline typename ft::iterator_traits<iter>::difference_type
-distance(iter start, iter finish)
+namespace ft
 {
-	typename ft::iterator_traits<iter>::difference_type result = 0;
 
-	while(start++ != finish)
-		++result;
-
-	return result;
+template<typename type_1, typename type_2>
+bool is_equal_types()
+{
+	return typeid(type_1) == typeid(type_2);
 }
 
 template<bool statement, typename T = void>
@@ -40,14 +37,6 @@ struct is_integral<unsigned char>
 
 template<>
 struct is_integral<wchar_t>
-{ static const bool value = true; };
-
-template<>
-struct is_integral<char16_t>
-{ static const bool value = true; };
-
-template<>
-struct is_integral<char32_t>
 { static const bool value = true; };
 
 template<>
@@ -81,5 +70,7 @@ struct is_integral<long long>
 template<>
 struct is_integral<unsigned long long>
 { static const bool value = true; };
+
+} // namespace ft
 
 #endif
