@@ -2,6 +2,8 @@
 
 static void	test_containers()
 {
+	std::cout << std::endl;
+	
 	#ifdef STL_TEST
 		print_colored_caption("STL containers test:", CLR_GREEN);
 	#else

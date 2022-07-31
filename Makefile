@@ -2,7 +2,7 @@ NAME		:= MyContainers.exe
 NAME_STL	:= STLContainers.exe
 
 CC			:= c++
-CFLAGS		:= -Wall -Wextra -Werror -std=c++98
+CFLAGS		:= -Wall -Wextra -Werror -std=c++98 -g
 DEP_FLAGS	:= -MP -MMD
 
 SRCS_DIR	:= sources
@@ -12,7 +12,7 @@ vpath %.hpp	$(HDRS_DIR)
 INCLUDES	:= -I$(HDRS_DIR)
 
 SRCS		:=	main.cpp \
-				utils.cpp \
+				test_utils.cpp \
 				timer.class.cpp \
 				vector.test.cpp
 
@@ -28,6 +28,14 @@ DEPS		:= $(SRCS:%.cpp=$(OBJS_DIR)/$(OBJ_PREFIX)%.d)
 all:
 					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME)'$(BOLD):$(DEF)"
 					@$(MAKE) --no-print-directory $(NAME)
+					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME_STL)'$(BOLD):$(DEF)"
+					@$(MAKE) --no-print-directory NAME=$(NAME_STL) CFLAGS+=" -D STL_TEST" OBJ_PREFIX=$(STL_PREFIX) $(NAME_STL)
+
+ft:
+					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME)'$(BOLD):$(DEF)"
+					@$(MAKE) --no-print-directory $(NAME)
+
+stl:
 					@echo "$(BOLD)Creating/updating $(WHITE_B)'$(NAME_STL)'$(BOLD):$(DEF)"
 					@$(MAKE) --no-print-directory NAME=$(NAME_STL) CFLAGS+=" -D STL_TEST" OBJ_PREFIX=$(STL_PREFIX) $(NAME_STL)
 
