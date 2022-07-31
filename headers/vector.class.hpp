@@ -70,18 +70,15 @@ class vector : protected base_vector<T, Allocator>
 
 		vector& operator=(const vector& instance)
 		{
-			if (&instance == this)
-				return *this;
+			if (&instance == this) return *this;
 
-			this->~vector();
-			// Think how to send actual iterator tag
-			range_init(instance.begin(), instance.end(), std::forward_iterator_tag());
-
+			base_type::~base_type();
+			range_init(instance.begin(), instance.end(), std::forward_iterator_tag()); // Think how to send actual iterator tag
+			
 			return *this;
 		}
 
-		~vector() throw()
-		{ std::_Destroy(m_ptr_start, m_ptr_finish, m_allocator); }
+		~vector() throw() { }
 
 	public:
 
