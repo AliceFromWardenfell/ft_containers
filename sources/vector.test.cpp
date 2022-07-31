@@ -56,32 +56,6 @@ static int size_and_val_constructor_test()
 	return 0;
 }
 
-static int copy_constructor_test()
-{
-	print_colored_caption("Copy constructor test:", CLR_YELLOW);
-
-	{
-		Human bob;
-
-		bob.name = "Bob";
-		bob.age = 35;
-
-		ft::vector<Human> bunch_of_bobs(10, bob);
-		std::cout	<< bunch_of_bobs[3].name
-					<< "'s age is "
-					<< bunch_of_bobs[3].age
-					<< std::endl;
-
-		ft::vector<Human> bunch_of_copies(bunch_of_bobs);
-		std::cout	<< bunch_of_copies[3].name
-					<< "'s age is still "
-					<< bunch_of_copies[3].age
-					<< std::endl;
-	}
-
-	return 0;
-}
-
 static int iterator_constructor_test()
 {
 	print_colored_caption("Iterator constructor test:", CLR_YELLOW);
@@ -131,23 +105,87 @@ static int iterator_constructor_test()
 	return 0;
 }
 
+static int copy_constructor_test()
+{
+	print_colored_caption("Copy constructor test:", CLR_YELLOW);
+
+	{
+		Human bob;
+
+		bob.name = "Bob";
+		bob.age = 35;
+
+		ft::vector<Human> bunch_of_bobs(10, bob);
+		std::cout	<< bunch_of_bobs[3].name
+					<< "'s age is "
+					<< bunch_of_bobs[3].age
+					<< std::endl;
+
+		ft::vector<Human> bunch_of_copies(bunch_of_bobs);
+		std::cout	<< bunch_of_copies[3].name
+					<< "'s age is still "
+					<< bunch_of_copies[3].age
+					<< std::endl;
+	}
+
+	return 0;
+}
+
+static int assignment_operator_test()
+{
+	print_colored_caption("Assignment operator test:", CLR_YELLOW);
+
+	{
+		Human stan;
+
+		stan.name = "Stan";
+		stan.age = 35;
+
+		ft::vector<Human> bunch_of_stans(10, stan);
+		std::cout	<< bunch_of_stans[3].name
+					<< "'s age is "
+					<< bunch_of_stans[3].age
+					<< std::endl;
+
+		Human lee;
+
+		lee.name = "Lee";
+		lee.age = 55;
+
+		ft::vector<Human> bunch_of_lees(10, lee);
+		std::cout	<< bunch_of_lees[3].name
+					<< "'s age is "
+					<< bunch_of_lees[3].age
+					<< std::endl;
+
+		bunch_of_lees = bunch_of_stans;
+		std::cout	<< bunch_of_lees[3].name
+					<< "'s age is "
+					<< bunch_of_lees[3].age
+					<< " (Lee: \"Help, I was consumed\")"
+					<< std::endl;
+	}
+
+	return 0;
+}
+
 static int destructor_test()
 {
 	print_colored_caption("Destructor test:", CLR_YELLOW);
 
-	{ /* memory leaks test */
-		ft::vector<char*> arr(10, NULL);
-		for (size_t i = 0; i < arr.size(); i++)
-		{
-			arr[i] = ::new char[i];
-			size_t j = i;
-			arr[i][j] = '\0';
-			while (j--)
-				arr[i][j] = '*';
-			std::cout << arr[i] << std::endl;
-		}
-	}
-	std::cout << "Has to be memory leaks in 10 blocks" << std::endl;
+	// { /* memory leaks test */
+	// 	ft::vector<char*> arr(10, NULL);
+	// 	for (size_t i = 0; i < arr.size(); i++)
+	// 	{
+	// 		arr[i] = ::new char[i];
+	// 		size_t j = i;
+	// 		arr[i][j] = '\0';
+	// 		while (j--)
+	// 			arr[i][j] = '*';
+	// 		std::cout << arr[i] << std::endl;
+	// 	}
+	// }
+	// std::cout << "Have to be memory leaks in 10 blocks" << std::endl;
 
 	return 0;
 }
@@ -178,7 +216,7 @@ static int iterators_test()
 		std::cout << std::endl;
 	} /* normal const iterator */
 	/* Have to make it -> const it conversion
-	{	
+	{
 		typedef ft::vector<int>::const_iterator const_normal_it;
 		const_normal_it it_begin(arr.begin());
 
@@ -275,8 +313,9 @@ void	vector_test() // mb turn into class
 		default_constructor_test,
 		allocator_constructor_test,
 		size_and_val_constructor_test,
-		copy_constructor_test,
 		iterator_constructor_test,
+		copy_constructor_test,
+		assignment_operator_test,
 		destructor_test,
 		iterators_test,
 		push_back_test,

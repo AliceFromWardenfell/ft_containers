@@ -81,15 +81,17 @@ class vector : protected base_vector<T, Allocator>
 			copy_elements(instance.begin(), instance.end(), m_ptr_start);
 		}
 
-		// vector& operator=(const vector& instance)
-		// {
-		// 	if (&instance == this)
-		// 		return *this;
+		vector& operator=(const vector& instance)
+		{
+			if (&instance == this)
+				return *this;
 
+			this->~vector();
+			// Think how to send actual iterator tag
+			range_init(instance.begin(), instance.end(), std::forward_iterator_tag());
 
-
-		// 	return *this;
-		// }
+			return *this;
+		}
 
 		~vector() throw()
 		{
