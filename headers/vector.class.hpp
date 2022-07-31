@@ -197,15 +197,14 @@ class vector : protected base_vector<T, Allocator>
 
 			try
 			{
-				for(; n > 0; --n, ++current_pos)
-				{
-					std::_Construct(std::__addressof(*current_pos), val);
-				}
+				for (; n > 0; --n, ++current_pos)
+					m_allocator.construct(current_pos, val);
 				m_ptr_finish = current_pos;
 			}
 			catch(...)
 			{
-				std::_Destroy(start, current_pos);
+				while (start++ != current_pos)
+					m_allocator.destroy(start);
 				throw;
 			}
 		}
