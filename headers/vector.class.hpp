@@ -9,6 +9,9 @@
 
 #include "base_vector.class.hpp"
 #include "iterator.hpp"
+#include "traits.hpp"
+
+#define MEM_REALLOC_FACTOR 2
 
 namespace ft
 {
@@ -37,6 +40,7 @@ class vector : protected base_vector<T, Allocator>
 		using base_type::m_ptr_start;
 		using base_type::m_ptr_finish;
 		using base_type::m_ptr_end_of_storage;
+		using base_type::m_allocator;
 		using base_type::m_allocate;
 		using base_type::m_deallocate;
 		using base_type::m_create_storage;
@@ -62,19 +66,38 @@ class vector : protected base_vector<T, Allocator>
 			fill_value_size_times(m_ptr_start, size, value);
 		}
 
-		template<typename InputIterator>
-		vector(InputIterator first, InputIterator last,
-			const allocator_type& allocator = allocator_type());
+		template<typename iter>
+		vector(iter first, iter last,
+			typename ft::enable_if<!ft::is_integral<iter>::value, bool>::type* = NULL)
+		{
+			typedef typename ft::iterator_traits<iter>::iterator_category it_tag;
+			range_init(first, last, it_tag());
+		}
 
 		vector(const vector& instance)
 		:	base_type(instance.size(), instance.get_allocator())
 		{
+			std::cout << "vector: " << "copy constructor" << std::endl; // debug
 			copy_elements(instance.begin(), instance.end(), m_ptr_start);
 		}
 
-		vector& operator=(const vector& instance);
+		vector& operator=(const vector& instance)
+		{
+			if (&instance == this)
+				return *this;
 
-		~vector() { }
+			this->~vector();
+			// Think how to send actual iterator tag
+			range_init(instance.begin(), instance.end(), std::forward_iterator_tag());
+
+			return *this;
+		}
+
+		~vector() throw()
+		{
+			std::cout << "vector: " << "destructor" << std::endl; // debug
+			std::_Destroy(m_ptr_start, m_ptr_finish, m_allocator);
+		}
 
 	public:
 
@@ -95,7 +118,8 @@ class vector : protected base_vector<T, Allocator>
 
 	/* Element access */
 
-		reference operator[](size_type index) throw();
+		reference operator[](size_type index) throw()
+		{ return *(m_ptr_start + index); }
 
 		const_reference operator[](size_type index) const throw();
 
@@ -115,19 +139,24 @@ class vector : protected base_vector<T, Allocator>
 
 		void assign(size_type size, const value_type& value);
 
-		template<typename InputIterator>
-		void assign(InputIterator first, InputIterator last);
+		template<typename iter>
+		void assign(iter first, iter last);
 
-		void push_back(const value_type& value);
-
+		void push_back(const value_type& value)
+		{
+			if (m_ptr_finish == m_ptr_end_of_storage)
+				reallocate();
+			m_allocator.construct(m_ptr_finish++, value);
+		}
+		
 		void pop_back() throw();
 
 		iterator insert(iterator position, const value_type& value);
 
 		void insert(iterator position, size_type amount, const value_type& value);
 
-		template<typename InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last);
+		template<typename iter>
+		void insert(iterator position, iter first, iter last);
 
 		iterator erase(iterator position);
 
@@ -164,8 +193,6 @@ class vector : protected base_vector<T, Allocator>
 		{ return const_reverse_iterator(begin()); }
 
 	protected:
-
-		void check_range(size_type size) const;
 
 		size_type check_init_len(size_type size) const
 		{
@@ -220,7 +247,44 @@ class vector : protected base_vector<T, Allocator>
 			}
 		}
 
-}; // class vector
+		void reallocate()
+		{
+			size_type current_capacity = size_type(m_ptr_end_of_storage - m_ptr_start);
+			size_type new_capacity = current_capacity ? current_capacity * (size_type)MEM_REALLOC_FACTOR : 1;
+			
+			pointer new_start = m_allocate(new_capacity);
+			
+			for (size_type i = 0; i < size(); ++i)
+				m_allocator.construct(&new_start[i], m_ptr_start[i]);
+
+			m_ptr_finish = new_start + size();
+			m_deallocate(m_ptr_start, size());
+			m_ptr_start = new_start;
+			m_ptr_end_of_storage = m_ptr_start + new_capacity;
+		}
+
+		template <typename iter>
+		inline void range_init(iter start, iter finish, std::input_iterator_tag)
+		{
+			std::cout << "range_init: input_iterator_tag" << std::endl; // debug
+			for(; start != finish; ++start)
+				push_back(*start);
+		}
+
+		template <typename iter>
+		inline void range_init(iter start, iter finish, std::forward_iterator_tag)
+		{
+			std::cout << "range_init: forward_iterator_tag" << std::endl; // debug
+			const size_type size = (size_type)ft::distance(start, finish);
+			m_ptr_start = m_allocate(check_init_len(size));
+			m_ptr_end_of_storage = m_ptr_start + size;
+			m_ptr_finish = m_ptr_end_of_storage;
+
+			// mb need to remove const from m_ptr_start
+			copy_elements(start, finish, m_ptr_start);
+		}
+
+}; // class vector	
 
 	template<typename T, typename Allocator>
 	inline void swap(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs) throw();
