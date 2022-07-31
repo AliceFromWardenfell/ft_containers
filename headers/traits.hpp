@@ -1,21 +1,15 @@
 #ifndef TRAITS_HPP
 #define TRAITS_HPP
 
-#include "iterator.hpp"
+#include <typeinfo>
 
 namespace ft
 {
 
-template<typename iter>
-inline typename ft::iterator_traits<iter>::difference_type
-distance(iter start, iter finish)
+template<typename type_1, typename type_2>
+bool is_equal_types()
 {
-	typename ft::iterator_traits<iter>::difference_type result = 0;
-
-	while(start++ != finish)
-		++result;
-
-	return result;
+	return typeid(type_1) == typeid(type_2);
 }
 
 template<bool statement, typename T = void>

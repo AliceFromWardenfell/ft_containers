@@ -5,6 +5,7 @@
 
 #include <iterator>
 #include <cstddef>
+#include "traits.hpp"
 #include <iostream> // debug
 
 namespace ft
@@ -73,14 +74,13 @@ class normal_iterator
 			std::cout << "normal_iterator: " << "copy constructor" << std::endl; // debug	
 		}
 
-		/* need special test
+		// need special test
 		template<typename iter>
-		normal_iterator(const normal_iterator<it, typename enable_if<is_equal_types<it, typename container::pointer>(), container>::type>& it)
+		normal_iterator(const normal_iterator<iter, typename ft::enable_if<ft::is_equal_types<iter, typename container::pointer>, container>::type>& it)
 		:	m_current_iterator(it.get_iterator())
 		{
 			std::cout << "normal_iterator: " << "iter to const_iter conversion" << std::endl; // debug
 		}
-		*/
 
 	public:
 
@@ -119,16 +119,6 @@ class normal_iterator
 
 		normal_iterator operator-(difference_type n) const throw()
 		{ return normal_iterator(m_current_iterator - n); }
-
-	private:
-
-		/* need special test
-		template<typename type_1, typename type_2> // mb move in utils.cpp
-		bool is_equal_types()
-		{
-			return typeid(type_1) == typeid(type_2);
-		}
-		*/
 
 }; // class normal_iterator
 
@@ -308,6 +298,18 @@ class reverse_iterator
 		operator+(typename reverse_iterator<iterator>::difference_type n,
 					const reverse_iterator<iterator>& it)
 		{ return reverse_iterator<iterator>(it.get_iterator() - n); }
+
+		template <typename iter>
+		inline typename ft::iterator_traits<iter>::difference_type
+		distance(iter start, iter finish)
+		{
+			typename ft::iterator_traits<iter>::difference_type result = 0;
+
+			while(start++ != finish)
+				++result;
+
+			return result;
+		}
 
 } // namespace ft
 
