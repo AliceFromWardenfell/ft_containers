@@ -6,7 +6,6 @@
 #include <iterator>
 #include <cstddef>
 #include "traits.hpp"
-#include <iostream> // debug
 
 namespace ft
 {
@@ -63,32 +62,15 @@ class normal_iterator
 		typedef typename traits_type::iterator_category	iterator_category;
 		
 		normal_iterator()
-		:	m_current_iterator(iterator_type())
-		{
-			std::cout << "normal_iterator: " << "default constructor" << std::endl; // debug
-		}
+		:	m_current_iterator(iterator_type()) { }
 
 		explicit normal_iterator(const iterator_type& it) throw()
-		:	m_current_iterator(it)
-		{
-			std::cout << "normal_iterator: " << "copy constructor" << std::endl; // debug	
-		}
+		:	m_current_iterator(it) { }
 
-		// need special test
 		template<typename iter>
 		normal_iterator(const normal_iterator<iter,
 			typename ft::enable_if<(ft::are_same<iter, typename container::pointer>::value), container>::type>& it) throw()
-		:	m_current_iterator(it.get_iterator())
-		{
-			std::cout << "normal_iterator: " << "iter to const_iter conversion" << std::endl; // debug
-		}
-
-		// template<typename _Iter>
-        // __normal_iterator(const __normal_iterator<_Iter,
-		// 	  typename __enable_if<
-      	//        (std::__are_same<_Iter, typename _Container::pointer>::__value),
-		//       _Container>::__type>& __i) _GLIBCXX_NOEXCEPT
-        // : _M_current(__i.base()) { }
+		:	m_current_iterator(it.get_iterator()) { }
 
 	public:
 
@@ -114,7 +96,7 @@ class normal_iterator
 		{ return normal_iterator(m_current_iterator--); }
 
 		reference operator[](difference_type n) const throw()
-		{ return m_current_iterator[n]; } // change to address arithmetics
+		{ return m_current_iterator[n]; }
 
 		normal_iterator& operator+=(difference_type n) throw()
 		{ return m_current_iterator += n; return *this; }
