@@ -6,13 +6,32 @@
 namespace ft
 {
 
-template<typename type_1, typename type_2>
-bool is_equal_types()
-{
-	return typeid(type_1) == typeid(type_2);
-}
+struct true_type { };
+struct false_type { };
 
-template<bool statement, typename T = void>
+template<bool>
+struct truth_type
+{ typedef false_type type; };
+
+template<>
+struct truth_type<true>
+{ typedef true_type type; };
+
+template<typename, typename>
+struct are_same
+{
+	enum { value = 0 };
+	typedef false_type type;
+};
+
+template<typename T>
+struct are_same<T, T>
+{
+	enum { value = 1 };
+	typedef true_type type;
+};
+
+template<bool, typename>
 struct enable_if { };
 
 template<typename T>

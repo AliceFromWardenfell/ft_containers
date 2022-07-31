@@ -215,7 +215,6 @@ static int iterators_test()
 			std::cout << *it_begin++ << " ";
 		std::cout << std::endl;
 	} /* normal const iterator */
-	/* Have to make it -> const it conversion
 	{
 		typedef ft::vector<int>::const_iterator const_normal_it;
 		const_normal_it it_begin(arr.begin());
@@ -225,11 +224,10 @@ static int iterators_test()
 					<< std::endl;
 		
 		std::cout << "Const normal array: ";
-		while (it_begin != arr.rend())
+		while (it_begin != arr.end())
 			std::cout << *it_begin++ << " ";
 		std::cout << std::endl;
 	}
-	*/
 	{ /* reverse iterator */
 		typedef ft::vector<int>::reverse_iterator reverse_it;
 		reverse_it it_begin(arr.rbegin());
@@ -243,8 +241,7 @@ static int iterators_test()
 			std::cout << *it_begin++ << " ";
 		std::cout << std::endl;
 	}
-	/* Have to make it -> const it conversion
-	{ // reverse const iterator
+	{ /* reverse const iterator */
 		typedef ft::vector<int>::const_reverse_iterator const_reverse_it;
 		const_reverse_it it_begin(arr.rbegin());
 
@@ -257,7 +254,6 @@ static int iterators_test()
 			std::cout << *it_begin++ << " ";
 		std::cout << std::endl;
 	}
-	*/
 
 	return 0;
 }
