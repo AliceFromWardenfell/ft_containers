@@ -7,6 +7,9 @@
 #include <iostream>
 #include "colors.hpp"
 
+#define TIME_UNIT_NS 1
+#define TIME_UNIT_US 2
+
 class timer
 {
 	public:
@@ -25,7 +28,8 @@ class timer
 	
 	protected:
 
-		int m_convert_to_microseconds(int nanoseconds) const;
+		int m_convert_to_microseconds(long nanoseconds) const;
+		void m_print_perfomance(long raw_result, int time_unit) const;
 
 }; // class timer
 
