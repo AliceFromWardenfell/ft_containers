@@ -254,6 +254,16 @@ static int iterators_test()
 			std::cout << *it_begin++ << " ";
 		std::cout << std::endl;
 	}
+	{ /* Comparison between normal and const iterator */
+		typedef ft::vector<int>::iterator normal_it;
+		typedef ft::vector<int>::const_iterator const_normal_it;
+
+		normal_it it(arr.begin());
+		const_normal_it const_it(arr.begin());
+
+		if (it == const_it)
+			std::cout << "Different iterators are indeed comparable" << std::endl;
+	}
 
 	return 0;
 }
