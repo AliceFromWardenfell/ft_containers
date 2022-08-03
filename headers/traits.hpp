@@ -90,6 +90,10 @@ template<>
 struct is_integral<unsigned long long>
 { static const bool value = true; };
 
+template<typename T>
+inline const T& max(const T& x, const T& y)
+{ return x > y ? x : y; }
+
 } // namespace ft
 
 #endif

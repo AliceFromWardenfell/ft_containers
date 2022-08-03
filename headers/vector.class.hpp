@@ -87,11 +87,64 @@ class vector : protected base_vector<T, Allocator>
 		{ return size_type(m_ptr_finish - m_ptr_start); }
 
 		size_type max_size() const throw()
+		{ return potential_size(); }
+
+		size_type check_new_vector_size(size_type size_to_insert) const
 		{
-			return potential_size();
+			if (max_size() - size() < size_to_insert)
+				throw std::length_error("insert_values_from_position(): max_size limit");
+			const size_type updated_size = size() + ft::max(size(), size_to_insert);
+			return updated_size > max_size() ? max_size() : updated_size;
 		}
 
-		void resize(size_type new_size, value_type value = value_type());
+		void insert_values_from_position(const value_type& value, iterator position, size_type size_to_insert)
+		{
+			if (!size_to_insert)
+				return;
+
+			if (size_type(m_ptr_end_of_storage - m_ptr_finish) >= size_to_insert)
+			{
+				value_type value_copy = value;
+				const size_type elements_amount_after_position = end() - position;
+				pointer old_finish = m_ptr_finish;
+				if (elements_amount_after_position > size_to_insert)
+				{
+					// move range(finish - size_to_insert, finish) to finish
+					// finish += size_to_insert
+					// fill range(pos, pos + size_to_insert) with value_copy
+				}
+				else
+				{
+					// ...
+				}
+			}
+			else
+			{
+				const size_type new_vector_size = check_new_vector_size(size_to_insert);
+				const size_type elements_amount_before_position = position - begin();
+				
+				pointer new_start = m_allocate(new_vector_size);
+				pointer new_finish = new_start;
+				fill_value_size_times(new_start + elements_amount_before_position, size_to_insert, value);
+				new_finish += size_to_insert;
+				
+				base_type::~base_type();
+				m_ptr_start = new_start;
+				m_ptr_finish = new_finish;
+				m_ptr_end_of_storage = new_start + new_vector_size;
+			}
+		
+		}
+
+		void resize(size_type new_size, value_type value = value_type())
+		{
+			if (new_size == size())
+				return;
+			if (new_size > size())
+				insert_values_from_position(value, end(), new_size - size());
+			// if (new_size < size())
+			// 	func();
+		}
 
 		size_type capacity() const throw();
 
