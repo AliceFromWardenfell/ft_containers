@@ -185,9 +185,8 @@ class vector : protected base_vector<T, Allocator>
 		size_type potential_size() const throw()
 		{
 			const size_t ptrdiff_max = PTRDIFF_MAX / sizeof(value_type);
-			// const size_t allocator_max = allocator_type::max_size();
-			// return std::min(ptrdiff_max, allocator_max); // mb replace on ? operator to get rid of <algorithm>
-			return ptrdiff_max;
+			const size_type allocator_max = m_allocator.max_size(); 
+			return ptrdiff_max < allocator_max ? ptrdiff_max : allocator_max;
 		}
 
 		template <typename iter, typename size, typename V>
