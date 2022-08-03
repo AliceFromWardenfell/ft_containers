@@ -4,6 +4,7 @@
 #pragma once
 
 #include <iostream>
+#include <algorithm>
 #include "test_utils.hpp"
 #include "colors.hpp"
 #include "timer.class.hpp"

@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <algorithm> // for std::min, mb create own
 #include <stdint.h> // for PTRDIFF_MAX
 
 #include "base_vector.class.hpp"
