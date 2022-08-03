@@ -86,7 +86,10 @@ class vector : protected base_vector<T, Allocator>
 		size_type size() const throw()
 		{ return size_type(m_ptr_finish - m_ptr_start); }
 
-		size_type max_size() const throw();
+		size_type max_size() const throw()
+		{
+			return potential_size();
+		}
 
 		void resize(size_type new_size, value_type value = value_type());
 

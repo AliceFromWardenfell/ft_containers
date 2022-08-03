@@ -278,6 +278,16 @@ static int size_test()
 	return 0;
 }
 
+static int max_size_test()
+{
+	print_colored_caption("Max_size() test:", CLR_YELLOW);
+
+	ft::vector<int> arr(125, 0);
+	std::cout << "Max size = " << arr.max_size() << std::endl;
+
+	return 0;
+}
+
 static int push_back_test()
 {
 	print_colored_caption("Push_back() test:", CLR_YELLOW);
@@ -324,8 +334,9 @@ void	vector_test() // mb turn into class
 		assignment_operator_test,
 		destructor_test,
 		iterators_test,
-		push_back_test,
-		size_test
+		size_test,
+		max_size_test,
+		push_back_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
 									sizeof(*vector_test_func);
