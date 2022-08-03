@@ -152,16 +152,16 @@ class vector : protected base_vector<T, Allocator>
 	/* Iterators */
 
 		iterator begin() throw()
-		{ return iterator(this->m_ptr_start); }
+		{ return iterator(m_ptr_start); }
 
 		const_iterator begin() const throw()
-		{ return const_iterator(this->m_ptr_start); }
+		{ return const_iterator(m_ptr_start); }
 
 		iterator end() throw()
-		{ return iterator(this->m_ptr_finish); }
+		{ return iterator(m_ptr_finish); }
 
 		const_iterator end() const throw()
-		{ return const_iterator(this->m_ptr_finish); }
+		{ return const_iterator(m_ptr_finish); }
 
 		reverse_iterator rbegin() throw()
 		{ return reverse_iterator(end()); }
