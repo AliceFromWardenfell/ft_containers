@@ -288,6 +288,28 @@ static int max_size_test()
 	return 0;
 }
 
+static int resize_test()
+{
+	print_colored_caption("Resize() test:", CLR_YELLOW);
+
+	ft::vector<int> arr(8, 1);
+	size_t new_size = arr.size() + 4;
+	int	value = 0;
+
+	std::cout << "Array before resize: " << std::endl;
+	for (size_t i = 0; i < arr.size(); i++)
+		std::cout << arr[i] << " ";
+	
+	arr.resize(new_size, value);
+
+	std::cout << std::endl << "Array after resize: " << std::endl;
+	for (size_t i = 0; i < arr.size(); i++)
+		std::cout << arr[i] << " ";
+	std::cout << std::endl;
+
+	return 0;
+}
+
 static int push_back_test()
 {
 	print_colored_caption("Push_back() test:", CLR_YELLOW);
@@ -336,6 +358,7 @@ void	vector_test() // mb turn into class
 		iterators_test,
 		size_test,
 		max_size_test,
+		resize_test,
 		push_back_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
