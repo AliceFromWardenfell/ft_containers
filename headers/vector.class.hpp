@@ -164,8 +164,8 @@ class vector : protected base_vector<T, Allocator>
 				return;
 			if (new_size > size())
 				insert_values_from_position(value, end(), new_size - size());
-			// if (new_size < size())
-			// 	func();
+			if (new_size < size())
+				excise_after_position(m_ptr_start + new_size);
 		}
 
 		size_type capacity() const throw()
@@ -306,6 +306,19 @@ class vector : protected base_vector<T, Allocator>
 				while (result++ != current_pos)
 					m_allocator.destroy(&(*result));
 				throw;
+			}
+		}
+
+		void excise_after_position(pointer position) throw()
+		{
+			size_type tale = m_ptr_finish - position;
+			pointer new_finish = position;
+			
+			if (tale)
+			{
+				while (position++ != m_ptr_finish)
+					m_allocator.destroy(&(*position));
+				m_ptr_finish = new_finish;
 			}
 		}
 

@@ -299,6 +299,7 @@ static int resize_test()
 	std::cout << "Array before resize: " << std::endl;
 	for (size_t i = 0; i < arr.size(); i++)
 		std::cout << arr[i] << " ";
+	
 	{ /* first case */
 		arr.resize(new_size, value);
 
@@ -309,6 +310,15 @@ static int resize_test()
 	}
 	{ /* second case */
 		arr.reserve(8);
+		arr.resize(new_size, value);
+
+		std::cout << "Array after resize: " << std::endl;
+		for (size_t i = 0; i < arr.size(); i++)
+			std::cout << arr[i] << " ";
+		std::cout << std::endl;
+	}
+	{ /* third case */
+		new_size = arr.size() / 2;
 		arr.resize(new_size, value);
 
 		std::cout << "Array after resize: " << std::endl;
