@@ -310,6 +310,34 @@ static int resize_test()
 	return 0;
 }
 
+static int capacity_test()
+{
+	print_colored_caption("Capacity() test:", CLR_YELLOW);
+
+	{
+		ft::vector<int> arr;
+		std::cout << "Capacity: " << arr.capacity() << std::endl;
+	}
+	{
+		ft::vector<int> arr(128, 0);
+		std::cout << "Capacity: " << arr.capacity() << std::endl;
+	}
+
+	return 0;
+}
+
+static int reserve_test()
+{
+	print_colored_caption("Reserve() test:", CLR_YELLOW);
+
+	ft::vector<int> arr(128, 0);
+	std::cout << "Capacity: " << arr.capacity() << std::endl;
+	arr.reserve(256);
+	std::cout << "Capacity: " << arr.capacity() << std::endl;
+
+	return 0;
+}
+
 static int push_back_test()
 {
 	print_colored_caption("Push_back() test:", CLR_YELLOW);
@@ -359,6 +387,8 @@ void	vector_test() // mb turn into class
 		size_test,
 		max_size_test,
 		resize_test,
+		capacity_test,
+		reserve_test,
 		push_back_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /

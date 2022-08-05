@@ -168,11 +168,18 @@ class vector : protected base_vector<T, Allocator>
 			// 	func();
 		}
 
-		size_type capacity() const throw();
+		size_type capacity() const throw()
+		{ return (size_type)(m_ptr_end_of_storage - m_ptr_start); }
 
 		bool empty() const throw();
 
-		void reserve(size_type size);
+		void reserve(size_type size)
+		{
+			if (size > max_size())
+				throw std::length_error("reserve(): max_size limit");
+			if (capacity() < size)
+				reallocate(size);
+		}
 
 	/* Element access */
 
@@ -302,13 +309,18 @@ class vector : protected base_vector<T, Allocator>
 			}
 		}
 
-		void reallocate()
+		void reallocate(size_type specific_capacity = 0)
 		{
 			size_type current_capacity = size_type(m_ptr_end_of_storage - m_ptr_start);
-			size_type new_capacity = current_capacity ? current_capacity * (size_type)MEM_REALLOC_FACTOR : 1;
-			
+			size_type new_capacity;
+
+			if (specific_capacity)
+				new_capacity = specific_capacity;
+			else
+				new_capacity = current_capacity ? current_capacity * (size_type)MEM_REALLOC_FACTOR : 1;
+
 			pointer new_start = m_allocate(new_capacity);
-			
+
 			for (size_type i = 0; i < size(); ++i)
 				m_allocator.construct(&new_start[i], m_ptr_start[i]);
 
