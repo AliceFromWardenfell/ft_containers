@@ -294,18 +294,28 @@ static int resize_test()
 
 	ft::vector<int> arr(8, 1);
 	size_t new_size = arr.size() + 4;
-	int	value = 0;
+	int	value = 2;
 
 	std::cout << "Array before resize: " << std::endl;
 	for (size_t i = 0; i < arr.size(); i++)
 		std::cout << arr[i] << " ";
-	
-	arr.resize(new_size, value);
+	{ /* first case */
+		arr.resize(new_size, value);
 
-	std::cout << std::endl << "Array after resize: " << std::endl;
-	for (size_t i = 0; i < arr.size(); i++)
-		std::cout << arr[i] << " ";
-	std::cout << std::endl;
+		std::cout << std::endl << "Array after resize: " << std::endl;
+		for (size_t i = 0; i < arr.size(); i++)
+			std::cout << arr[i] << " ";
+		std::cout << std::endl;
+	}
+	{ /* second case */
+		arr.reserve(8);
+		arr.resize(new_size, value);
+
+		std::cout << "Array after resize: " << std::endl;
+		for (size_t i = 0; i < arr.size(); i++)
+			std::cout << arr[i] << " ";
+		std::cout << std::endl;
+	}
 
 	return 0;
 }
