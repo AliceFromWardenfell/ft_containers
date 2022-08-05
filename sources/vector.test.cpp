@@ -296,14 +296,14 @@ static int resize_test()
 	size_t new_size = arr.size() + 4;
 	int	value = 2;
 
-	std::cout << "Array before resize: " << std::endl;
+	std::cout << "Array before resizing: " << std::endl;
 	for (size_t i = 0; i < arr.size(); i++)
 		std::cout << arr[i] << " ";
-	
+
 	{ /* first case */
 		arr.resize(new_size, value);
 
-		std::cout << std::endl << "Array after resize: " << std::endl;
+		std::cout << std::endl << "Array after resizing: " << std::endl;
 		for (size_t i = 0; i < arr.size(); i++)
 			std::cout << arr[i] << " ";
 		std::cout << std::endl;
@@ -312,7 +312,7 @@ static int resize_test()
 		arr.reserve(8);
 		arr.resize(new_size, value);
 
-		std::cout << "Array after resize: " << std::endl;
+		std::cout << "Array after resizing: " << std::endl;
 		for (size_t i = 0; i < arr.size(); i++)
 			std::cout << arr[i] << " ";
 		std::cout << std::endl;
@@ -321,7 +321,7 @@ static int resize_test()
 		new_size = arr.size() / 2;
 		arr.resize(new_size, value);
 
-		std::cout << "Array after resize: " << std::endl;
+		std::cout << "Array after resizing: " << std::endl;
 		for (size_t i = 0; i < arr.size(); i++)
 			std::cout << arr[i] << " ";
 		std::cout << std::endl;
@@ -387,6 +387,34 @@ static int push_back_test()
 	return 0;
 }
 
+static int insert_test()
+{
+	print_colored_caption("Insert() test:", CLR_YELLOW);
+
+	ft::vector<int> arr(7, 2);
+	std::cout << "Array before inserting: " << std::endl;
+	for (size_t i = 0; i < arr.size(); i++)
+		std::cout << arr[i] << " ";
+	std::cout << std::endl;
+	{ /* first overload */
+		arr.insert(arr.begin(), 2);
+
+		std::cout << "Array after inserting: " << std::endl;
+		for (size_t i = 0; i < arr.size(); i++)
+			std::cout << arr[i] << " ";
+	}
+	{ /* second overload */
+		ft::vector<int>::iterator it(&arr[4]);
+		arr.insert(it, 4, 4);
+
+		std::cout << std::endl << "Array after inserting: " << std::endl;
+		for (size_t i = 0; i < arr.size(); i++)
+			std::cout << arr[i] << " ";
+	}
+
+	return 0;
+}
+
 void	vector_test() // mb turn into class
 {
 	std::cout << std::endl;
@@ -409,7 +437,8 @@ void	vector_test() // mb turn into class
 		resize_test,
 		capacity_test,
 		reserve_test,
-		push_back_test
+		push_back_test,
+		insert_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
 									sizeof(*vector_test_func);

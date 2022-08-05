@@ -216,12 +216,18 @@ class vector : protected base_vector<T, Allocator>
 		
 		void pop_back() throw();
 
-		iterator insert(iterator position, const value_type& value);
+		iterator insert(iterator position, const value_type& value)
+		{
+			insert_values_from_position(value, position, (size_type)1);
 
-		void insert(iterator position, size_type amount, const value_type& value);
+			return position;
+		}
 
-		template<typename iter>
-		void insert(iterator position, iter first, iter last);
+		void insert(iterator position, size_type amount, const value_type& value)
+		{ insert_values_from_position(value, position, amount); }
+
+		// template<typename iter>
+		// void insert(iterator position, iter first, iter last);
 
 		iterator erase(iterator position);
 
