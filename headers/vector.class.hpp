@@ -53,7 +53,10 @@ class vector : protected base_vector<T, Allocator>
 		explicit vector(size_type size, const value_type& value = value_type(),
 			const allocator_type& allocator = allocator_type())
 		:	base_type(check_init_len(size), allocator)
-		{ fill_value_size_times(m_ptr_start, size, value); }
+		{
+			fill_value_size_times(m_ptr_start, size, value);
+			m_ptr_finish += size;
+		}
 
 		template<typename iter>
 		vector(iter first, iter last,
@@ -65,7 +68,10 @@ class vector : protected base_vector<T, Allocator>
 
 		vector(const vector& instance)
 		:	base_type(instance.size(), instance.get_allocator())
-		{ copy_elements(instance.begin(), instance.end(), m_ptr_start); }
+		{
+			copy_elements(instance.begin(), instance.end(), m_ptr_start);
+			m_ptr_finish += instance.size();
+		}
 
 		vector& operator=(const vector& instance)
 		{
@@ -110,24 +116,40 @@ class vector : protected base_vector<T, Allocator>
 				if (elements_amount_after_position > size_to_insert)
 				{
 					// move range(finish - size_to_insert, finish) to finish
+					copy_elements(m_ptr_finish - size_to_insert, m_ptr_finish, m_ptr_finish);
 					// finish += size_to_insert
+					m_ptr_finish += size_to_insert;
 					// fill range(pos, pos + size_to_insert) with value_copy
+					fill_value_size_times(position, size_to_insert, value_copy);
 				}
 				else
 				{
-					// ...
+					// fill range(finish, size_to_insert - elements_amount_after_position)
+					fill_value_size_times(m_ptr_finish, size_to_insert - elements_amount_after_position, value_copy);
+					m_ptr_finish += size_to_insert - elements_amount_after_position;
+					// move range(position, olf_finish, finish)
+					copy_elements(position.get_iterator(), old_finish, m_ptr_finish);
+					m_ptr_finish += elements_amount_after_position;
+					// fill range(position, old_finish) with cpy_value
+					fill_value_size_times(position.get_iterator(), elements_amount_after_position, value_copy);
 				}
 			}
 			else
 			{
 				const size_type new_vector_size = check_new_vector_size(size_to_insert);
 				const size_type elements_amount_before_position = position - begin();
-				
+				const size_type elements_amount_after_position = end() - position;
+
 				pointer new_start = m_allocate(new_vector_size);
 				pointer new_finish = new_start;
+
 				fill_value_size_times(new_start + elements_amount_before_position, size_to_insert, value);
-				new_finish += size_to_insert;
-				
+				new_finish += elements_amount_before_position + size_to_insert;
+
+				copy_elements(m_ptr_start, position.get_iterator(), new_start);
+				copy_elements(position.get_iterator(), m_ptr_finish, new_finish);
+				new_finish += elements_amount_after_position;
+
 				base_type::~base_type();
 				m_ptr_start = new_start;
 				m_ptr_finish = new_finish;
@@ -251,14 +273,13 @@ class vector : protected base_vector<T, Allocator>
 
 			try
 			{
-				for (; n > 0; --n, ++current_pos)
-					m_allocator.construct(current_pos, val);
-				m_ptr_finish = current_pos;
+				for (; n > 0; --n, (void)++current_pos)
+					m_allocator.construct(&(*current_pos), val);
 			}
 			catch(...)
 			{
 				while (start++ != current_pos)
-					m_allocator.destroy(start);
+					m_allocator.destroy(&(*start));
 				throw;
 			}
 		}
@@ -271,13 +292,12 @@ class vector : protected base_vector<T, Allocator>
 			try
 			{
 				for (; start != finish; ++start, (void)++current_pos)
-					m_allocator.construct(current_pos, *start);
-				m_ptr_finish = current_pos;
+					m_allocator.construct(&(*current_pos), *start);
 			}
 			catch(...)
 			{
 				while (result++ != current_pos)
-					m_allocator.destroy(result);
+					m_allocator.destroy(&(*result));
 				throw;
 			}
 		}
