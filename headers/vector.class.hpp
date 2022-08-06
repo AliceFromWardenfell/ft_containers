@@ -565,22 +565,35 @@ class vector : protected base_vector<T, Allocator>
 	/* Relational operators */
 
 	template<typename T, typename Allocator>
-	inline bool operator==(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
+	inline bool operator==(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] != rhs[i])
+				return false;
+		return true;
+	}
 
 	template<typename T, typename Allocator>
-	inline bool operator<(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
+	inline bool operator<(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
+	{ return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
 
 	template<typename T, typename Allocator>
-	inline bool operator!=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
+	inline bool operator!=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
+	{ return (!(lhs == rhs)); }
 
 	template<typename T, typename Allocator>
-	inline bool operator>(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
+	inline bool operator>(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
+	{ return rhs < lhs; }
 
 	template<typename T, typename Allocator>
-	inline bool operator<=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
+	inline bool operator<=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
+	{ return !(rhs < lhs); }
 
 	template<typename T, typename Allocator>
-	inline bool operator>=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs);
+	inline bool operator>=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
+	{ return !(lhs < rhs); }
 
 } // namespace ft
 

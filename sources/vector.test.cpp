@@ -665,6 +665,33 @@ static int vector_swap_test()
 	return 0;
 }
 
+static int relational_operators_test()
+{
+	print_colored_caption("Relational operators test:", CLR_YELLOW);
+
+	ft::vector<int> arr1(4, 2);
+	ft::vector<int> arr2(4, 2);
+
+	std::cout << "arr1 == arr2: "	<< (arr1 == arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 != arr2: "	<< (arr1 != arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 > arr2: "	<< (arr1 > arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 < arr2: "	<< (arr1 < arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 >= arr2: "	<< (arr1 >= arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 <= arr2: "	<< (arr1 <= arr2 ? "true" : "false") << std::endl;
+
+	std::cout << "-------------------" << std::endl;
+	arr2.push_back(2);
+
+	std::cout << "arr1 == arr2: "	<< (arr1 == arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 != arr2: "	<< (arr1 != arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 > arr2: "	<< (arr1 > arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 < arr2: "	<< (arr1 < arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 >= arr2: "	<< (arr1 >= arr2 ? "true" : "false") << std::endl;
+	std::cout << "arr1 <= arr2: "	<< (arr1 <= arr2 ? "true" : "false") << std::endl;
+
+	return 0;
+}
+
 void	vector_test() // mb turn into class
 {
 	std::cout << std::endl;
@@ -695,7 +722,8 @@ void	vector_test() // mb turn into class
 		insert_test,
 		erase_test,
 		vector_swap_test,
-		clear_test
+		clear_test,
+		relational_operators_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
 									sizeof(*vector_test_func);
