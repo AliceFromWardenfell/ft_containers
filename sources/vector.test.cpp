@@ -418,7 +418,7 @@ static int insert_test()
 			ft::vector<int>::iterator first(&to_insert_from[4]);
 			ft::vector<int>::iterator last(&to_insert_from[8]);
 
-			arr.reserve(32);
+			arr.reserve(20);
 			arr.insert(arr.end(), first, last);
 
 			std::cout << std::endl << "Array after inserting: " << std::endl;
@@ -431,8 +431,21 @@ static int insert_test()
 			ft::vector<int>::iterator first(&to_insert_from[4]);
 			ft::vector<int>::iterator last(&to_insert_from[8]);
 
-			arr.reserve(32);
 			arr.insert(arr.begin(), first, last);
+
+			std::cout << std::endl << "Array after inserting: " << std::endl;
+			for (size_t i = 0; i < arr.size(); i++)
+				std::cout << arr[i] << " ";
+			std::cout << std::endl;
+		}
+		{ /* third case */
+			ft::vector<int> to_insert_from(2, 16);
+
+			ft::vector<int>::iterator first(to_insert_from.begin());
+			ft::vector<int>::iterator last(to_insert_from.end());
+			ft::vector<int>::iterator position(&arr[10]);
+
+			arr.insert(position, first, last);
 
 			std::cout << std::endl << "Array after inserting: " << std::endl;
 			for (size_t i = 0; i < arr.size(); i++)

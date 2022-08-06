@@ -374,24 +374,26 @@ class vector : protected base_vector<T, Allocator>
 			}
 			else
 			{
-				// const size_type new_vector_size = check_new_vector_size(size_to_insert);
-				// const size_type elements_amount_before_position = position - begin();
-				// const size_type elements_amount_after_position = end() - position;
+				const size_type new_vector_size = check_new_vector_size(range_size);
+				const size_type elements_amount_before_position = position - begin();
+				const size_type elements_amount_after_position = end() - position;
 
-				// pointer new_start = m_allocate(new_vector_size);
-				// pointer new_finish = new_start;
+				pointer new_start = m_allocate(new_vector_size);
+				pointer new_finish = new_start;
 
-				// fill_value_size_times(new_start + elements_amount_before_position, size_to_insert, value);
-				// new_finish += elements_amount_before_position + size_to_insert;
+				copy_elements(m_ptr_start, position.get_iterator(), new_start);
+				new_finish += elements_amount_before_position;
 
-				// copy_elements(m_ptr_start, position.get_iterator(), new_start);
-				// copy_elements(position.get_iterator(), m_ptr_finish, new_finish);
-				// new_finish += elements_amount_after_position;
+				copy_elements(first, last, new_finish);
+				new_finish += range_size;
 
-				// base_type::~base_type();
-				// m_ptr_start = new_start;
-				// m_ptr_finish = new_finish;
-				// m_ptr_end_of_storage = new_start + new_vector_size;
+				copy_elements(position.get_iterator(), m_ptr_finish, new_finish);
+				new_finish += elements_amount_after_position;
+
+				base_type::~base_type();
+				m_ptr_start = new_start;
+				m_ptr_finish = new_finish;
+				m_ptr_end_of_storage = new_start + new_vector_size;
 			}
 		}
 
