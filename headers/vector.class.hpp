@@ -251,9 +251,25 @@ class vector : protected base_vector<T, Allocator>
 			typename ft::enable_if<!ft::is_integral<iter>::value, bool>::type* = NULL)
 		{ insert_range_from_position(position, first, last); }
 
-		iterator erase(iterator position);
+		iterator erase(iterator position)
+		{
+			if (position + 1 != end())
+				copy_elements(position + 1, end(), position);
+			m_ptr_finish--;
+			m_allocator.destroy(&(*m_ptr_finish));
+			return position;
+		}
 
-		iterator erase(iterator first, iterator last);
+		iterator erase(iterator first, iterator last)
+		{
+			if (first != last)
+			{
+				if (last != end())
+					copy_elements(last, end(), first);
+				excise_after_position(first.get_iterator() + (end() - last));
+			}
+			return first;
+		}
 
 		void swap(vector& instance) throw()
 		{
@@ -261,12 +277,12 @@ class vector : protected base_vector<T, Allocator>
 			tmp.copy_data(*this);
 			copy_data(instance);
 			instance.copy_data(tmp);
-			
+
 			tmp.m_ptr_start = NULL;
 			tmp.m_ptr_finish = NULL;
 			tmp.m_ptr_end_of_storage = NULL;
 
-			// swap allocators
+			// mb swap allocators
 		}
 
 		void clear() throw();

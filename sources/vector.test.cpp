@@ -581,6 +581,39 @@ static int insert_test()
 	return 0;
 }
 
+static int erase_test()
+{
+	print_colored_caption("Erase test:", CLR_YELLOW);
+
+	ft::vector<int> arr;
+	arr.reserve(16);
+	std::cout << "Array before erasing: " << std::endl;
+	for (size_t i = 0; i < arr.capacity(); i++)
+	{
+		arr.push_back(i + 1);
+		std::cout << arr[i] << " ";
+	}
+	std::cout << std::endl;
+
+	arr.erase(arr.end() - 1);
+	arr.erase(arr.begin());
+
+	std::cout << "Array after erasing: " << std::endl;
+	for (size_t i = 0; i < arr.size(); i++)
+		std::cout << arr[i] << " ";
+	std::cout << std::endl;
+
+	ft::vector<int>::iterator it(&arr[8]);
+	arr.erase(arr.begin(), it);
+
+	std::cout << "Array after range erasing: " << std::endl;
+	for (size_t i = 0; i < arr.size(); i++)
+		std::cout << arr[i] << " ";
+	std::cout << std::endl;
+
+	return 0;
+}
+
 static int vector_swap_test()
 {
 	print_colored_caption("Vector::swap() test:", CLR_YELLOW);
@@ -647,6 +680,7 @@ void	vector_test() // mb turn into class
 		push_back_test,
 		pop_back_test,
 		insert_test,
+		erase_test,
 		vector_swap_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
