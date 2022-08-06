@@ -124,19 +124,34 @@ class vector : protected base_vector<T, Allocator>
 		reference operator[](size_type index) throw()
 		{ return *(m_ptr_start + index); }
 
-		const_reference operator[](size_type index) const throw();
+		const_reference operator[](size_type index) const throw()
+		{ return *(m_ptr_start + index); }
 
-		reference at(size_type index);
+		reference at(size_type index)
+		{
+			if (index >= size())
+				throw std::out_of_range("at(): out of vector range");
+			return (*this)[index];
+		}
 
-		const_reference at(size_type index) const;
+		const_reference at(size_type index) const
+		{
+			if (index >= size())
+				throw std::out_of_range("at(): out of vector range");
+			return (*this)[index];
+		}
 
-		reference front() throw();
+		reference front() throw()
+		{ return *begin(); }
 
-		const_reference front() const throw();
+		const_reference front() const throw()
+		{ return *begin(); }
 
-		reference back() throw();
+		reference back() throw()
+		{ return *(end() - 1); }
 
-		const_reference back() const throw();
+		const_reference back() const throw()
+		{ return *(end() - 1); }
 
 	/* Modifiers */
 

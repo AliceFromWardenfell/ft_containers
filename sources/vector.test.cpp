@@ -369,6 +369,22 @@ static int reserve_test()
 	return 0;
 }
 
+static int element_access_test()
+{
+	print_colored_caption("Element access test:", CLR_YELLOW);
+
+	ft::vector<int> arr;
+
+	for (size_t i = 0; i < 3; i++)
+		arr.push_back(i + 1);
+
+	std::cout << "at(1): " << arr.at(1) << std::endl;
+	std::cout << "back: " << arr.back() << std::endl;
+	std::cout << "front: " << arr.front() << std::endl;
+
+	return 0;
+}
+
 static int push_back_test()
 {
 	print_colored_caption("Push_back() test:", CLR_YELLOW);
@@ -458,7 +474,7 @@ static int insert_test()
 
 			arr.insert(position, first, last);
 
-			std::cout << std::endl << "Array after inserting: " << std::endl;
+			std::cout << "Array after inserting: " << std::endl;
 			for (size_t i = 0; i < arr.size(); i++)
 				std::cout << arr[i] << " ";
 			std::cout << std::endl;
@@ -491,6 +507,7 @@ void	vector_test() // mb turn into class
 		capacity_test,
 		empty_test,
 		reserve_test,
+		element_access_test,
 		push_back_test,
 		insert_test
 	};
