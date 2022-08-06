@@ -98,7 +98,7 @@ class normal_iterator
 		{ return m_current_iterator[n]; }
 
 		normal_iterator& operator+=(difference_type n) throw()
-		{ return m_current_iterator += n; return *this; }
+		{ m_current_iterator += n; return *this; }
 
 		normal_iterator operator+(difference_type n) const throw()
 		{ return normal_iterator(m_current_iterator + n); }
@@ -172,6 +172,18 @@ class normal_iterator
 		inline bool operator>=(const normal_iterator<iterator, container>& lhs,
 								const normal_iterator<iterator, container>& rhs) throw()
 		{ return lhs.get_iterator() >= rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline typename normal_iterator<iterator, container>::difference_type
+		operator-(const normal_iterator<iterator, container>& lhs,
+					const normal_iterator<iterator, container>& rhs) throw()
+		{ return lhs.get_iterator() - rhs.get_iterator(); }
+
+		template<typename iterator, typename container>
+		inline normal_iterator<iterator, container>
+		operator+(typename normal_iterator<iterator, container>::difference_type n,
+					const normal_iterator<iterator, container>& i) throw()
+		{ return normal_iterator<iterator, container>(i.get_iterator() + n); }
 
 template<typename iterator>
 class reverse_iterator
