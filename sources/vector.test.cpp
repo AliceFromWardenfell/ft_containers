@@ -388,33 +388,69 @@ static int element_access_test()
 static int assign_test()
 {
 	print_colored_caption("Assign test:", CLR_YELLOW);
-
-	ft::vector<int> base_arr(4, 2);
-	std::cout << "Array after asigning: " << std::endl;
-	for (size_t i = 0; i < base_arr.size(); i++)
-		std::cout << base_arr[i] << " ";
-	std::cout << std::endl;
-	{ /* realloc case */
-		base_arr.assign(8, 4);
+	
+	{ /* size&val case */
+		ft::vector<int> base_arr(4, 2);
 		std::cout << "Array after asigning: " << std::endl;
 		for (size_t i = 0; i < base_arr.size(); i++)
 			std::cout << base_arr[i] << " ";
 		std::cout << std::endl;
+		
+		{ /* realloc case */
+			base_arr.assign(8, 4);
+			std::cout << "Array after asigning: " << std::endl;
+			for (size_t i = 0; i < base_arr.size(); i++)
+				std::cout << base_arr[i] << " ";
+			std::cout << std::endl;
+		}
+		{ /* new_size > curr_size case */
+			base_arr.reserve(16);
+			base_arr.assign(16, 8);
+			std::cout << "Array after asigning: " << std::endl;
+			for (size_t i = 0; i < base_arr.size(); i++)
+				std::cout << base_arr[i] << " ";
+			std::cout << std::endl;
+		}
+		{ /* new_size < curr_size case */
+			base_arr.assign(2, 16);
+			std::cout << "Array after asigning: " << std::endl;
+			for (size_t i = 0; i < base_arr.size(); i++)
+				std::cout << base_arr[i] << " ";
+			std::cout << std::endl;
+		}
 	}
-	{ /* new_size > curr_size case */
-		base_arr.reserve(16);
-		base_arr.assign(16, 8);
+	{ /* range case */
+		ft::vector<int> base_arr(4, 2);
 		std::cout << "Array after asigning: " << std::endl;
 		for (size_t i = 0; i < base_arr.size(); i++)
 			std::cout << base_arr[i] << " ";
 		std::cout << std::endl;
-	}
-	{ /* new_size < curr_size case */
-		base_arr.assign(2, 16);
-		std::cout << "Array after asigning: " << std::endl;
-		for (size_t i = 0; i < base_arr.size(); i++)
-			std::cout << base_arr[i] << " ";
-		std::cout << std::endl;
+		
+		{ /* realloc case */
+			ft::vector<int> arr_to_copy_from(8, 4);
+			base_arr.assign(arr_to_copy_from.begin(), arr_to_copy_from.end());
+			std::cout << "Array after asigning: " << std::endl;
+			for (size_t i = 0; i < base_arr.size(); i++)
+				std::cout << base_arr[i] << " ";
+			std::cout << std::endl;
+		}
+		{ /* new_size > curr_size case */
+			ft::vector<int> arr_to_copy_from(16, 8);
+			base_arr.reserve(16);
+			base_arr.assign(arr_to_copy_from.begin(), arr_to_copy_from.end());
+			std::cout << "Array after asigning: " << std::endl;
+			for (size_t i = 0; i < base_arr.size(); i++)
+				std::cout << base_arr[i] << " ";
+			std::cout << std::endl;
+		}
+		{ /* new_size < curr_size case */
+			ft::vector<int> arr_to_copy_from(2, 16);
+			base_arr.assign(arr_to_copy_from.begin(), arr_to_copy_from.end());
+			std::cout << "Array after asigning: " << std::endl;
+			for (size_t i = 0; i < base_arr.size(); i++)
+				std::cout << base_arr[i] << " ";
+			std::cout << std::endl;
+		}
 	}
 
 	return 0;

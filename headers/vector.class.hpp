@@ -190,8 +190,39 @@ class vector : protected base_vector<T, Allocator>
 			}
 		}
 
-		// template<typename iter>
-		// void assign(iter first, iter last);
+		template<typename iter>
+		void assign(iter first, iter last,
+			typename ft::enable_if<!ft::is_integral<iter>::value, bool>::type* = NULL)
+		{
+			const size_type range_size = std::distance(first, last);
+			if (range_size > capacity())
+			{
+				vector tmp(first, last);
+				tmp.swap(*this);
+			}
+			else if (size() >= range_size)
+			{
+				excise_after_position(m_ptr_start + range_size);
+				pointer current_pos = m_ptr_start;
+				while (current_pos != m_ptr_finish)
+				{
+					m_allocator.destroy(&(*current_pos));
+					m_allocator.construct(&(*current_pos++), *first++);
+				}
+			}
+			else
+			{
+				pointer current_pos = m_ptr_start;
+				while (current_pos != m_ptr_finish)
+				{
+					m_allocator.destroy(&(*current_pos));
+					m_allocator.construct(&(*current_pos++), *first++);
+				}
+				m_ptr_finish = m_ptr_start + range_size;
+				while (current_pos != m_ptr_finish)
+					m_allocator.construct(&(*current_pos++), *first++);
+			}
+		}
 
 		void push_back(const value_type& value)
 		{
