@@ -385,6 +385,41 @@ static int element_access_test()
 	return 0;
 }
 
+static int assign_test()
+{
+	print_colored_caption("Assign test:", CLR_YELLOW);
+
+	ft::vector<int> base_arr(4, 2);
+	std::cout << "Array after asigning: " << std::endl;
+	for (size_t i = 0; i < base_arr.size(); i++)
+		std::cout << base_arr[i] << " ";
+	std::cout << std::endl;
+	{ /* realloc case */
+		base_arr.assign(8, 4);
+		std::cout << "Array after asigning: " << std::endl;
+		for (size_t i = 0; i < base_arr.size(); i++)
+			std::cout << base_arr[i] << " ";
+		std::cout << std::endl;
+	}
+	{ /* new_size > curr_size case */
+		base_arr.reserve(16);
+		base_arr.assign(16, 8);
+		std::cout << "Array after asigning: " << std::endl;
+		for (size_t i = 0; i < base_arr.size(); i++)
+			std::cout << base_arr[i] << " ";
+		std::cout << std::endl;
+	}
+	{ /* new_size < curr_size case */
+		base_arr.assign(2, 16);
+		std::cout << "Array after asigning: " << std::endl;
+		for (size_t i = 0; i < base_arr.size(); i++)
+			std::cout << base_arr[i] << " ";
+		std::cout << std::endl;
+	}
+
+	return 0;
+}
+
 static int push_back_test()
 {
 	print_colored_caption("Push_back() test:", CLR_YELLOW);
@@ -546,6 +581,7 @@ void	vector_test() // mb turn into class
 		empty_test,
 		reserve_test,
 		element_access_test,
+		assign_test,
 		push_back_test,
 		insert_test,
 		vector_swap_test

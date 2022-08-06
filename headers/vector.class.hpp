@@ -155,10 +155,43 @@ class vector : protected base_vector<T, Allocator>
 
 	/* Modifiers */
 
-		void assign(size_type size, const value_type& value);
+		void assign(size_type new_size, const value_type& value)
+		{
+			value_type value_copy = value;
+			if (new_size > capacity())
+			{
+				vector tmp(new_size, value, m_allocator);
+				tmp.swap(*this);
+			}
+			else if (new_size > size())
+			{
+				pointer current_pos = m_ptr_start;
+				while (current_pos < m_ptr_finish)
+				{
+					m_allocator.destroy(&(*current_pos));
+					m_allocator.construct(&(*current_pos++), value_copy);
+				}
+				m_ptr_finish += new_size - size();
+				while (current_pos < m_ptr_finish)
+					m_allocator.construct(&(*current_pos++), value_copy);
+			}
+			else
+			{
+				pointer current_pos = m_ptr_start;
+				pointer old_finish = m_ptr_finish;
+				m_ptr_finish -= size() - new_size;
+				while (current_pos < m_ptr_finish)
+				{
+					m_allocator.destroy(&(*current_pos));
+					m_allocator.construct(&(*current_pos++), value_copy);
+				}
+				while (current_pos < old_finish)
+					m_allocator.destroy(&(*current_pos++));
+			}
+		}
 
-		template<typename iter>
-		void assign(iter first, iter last);
+		// template<typename iter>
+		// void assign(iter first, iter last);
 
 		void push_back(const value_type& value)
 		{
