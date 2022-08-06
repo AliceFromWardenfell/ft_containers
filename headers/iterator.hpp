@@ -98,7 +98,7 @@ class normal_iterator
 		{ return m_current_iterator[n]; }
 
 		normal_iterator& operator+=(difference_type n) throw()
-		{ return m_current_iterator += n; return *this; }
+		{ m_current_iterator += n; return *this; }
 
 		normal_iterator operator+(difference_type n) const throw()
 		{ return normal_iterator(m_current_iterator + n); }

@@ -411,6 +411,21 @@ static int insert_test()
 		for (size_t i = 0; i < arr.size(); i++)
 			std::cout << arr[i] << " ";
 	}
+	{ /* third overload */
+		{ /* first case */
+			ft::vector<int> to_insert_from(16, 8);
+
+			ft::vector<int>::iterator first(&to_insert_from[4]);
+			ft::vector<int>::iterator last(&to_insert_from[8]);
+
+			arr.reserve(32);
+			arr.insert(arr.end(), first, last);
+
+			std::cout << std::endl << "Array after inserting: " << std::endl;
+			for (size_t i = 0; i < arr.size(); i++)
+				std::cout << arr[i] << " ";
+		}
+	}
 
 	return 0;
 }

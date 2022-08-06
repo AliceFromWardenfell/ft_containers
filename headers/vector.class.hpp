@@ -41,7 +41,7 @@ class vector : protected base_vector<T, Allocator>
 		using base_type::m_allocator;
 		using base_type::m_allocate;
 		using base_type::m_deallocate;
-		using base_type::m_create_storage;
+		using base_type::m_create_storage; // mb remove
 
 	public:
 
@@ -79,7 +79,7 @@ class vector : protected base_vector<T, Allocator>
 
 			base_type::~base_type();
 			range_init(instance.begin(), instance.end(), std::forward_iterator_tag()); // Think how to send actual iterator tag
-			
+
 			return *this;
 		}
 
@@ -94,69 +94,6 @@ class vector : protected base_vector<T, Allocator>
 
 		size_type max_size() const throw()
 		{ return potential_size(); }
-
-		size_type check_new_vector_size(size_type size_to_insert) const
-		{
-			if (max_size() - size() < size_to_insert)
-				throw std::length_error("insert_values_from_position(): max_size limit");
-			const size_type updated_size = size() + ft::max(size(), size_to_insert);
-			return updated_size > max_size() ? max_size() : updated_size;
-		}
-
-		void insert_values_from_position(const value_type& value, iterator position, size_type size_to_insert)
-		{
-			if (!size_to_insert)
-				return;
-
-			if (size_type(m_ptr_end_of_storage - m_ptr_finish) >= size_to_insert)
-			{
-				value_type value_copy = value;
-				const size_type elements_amount_after_position = end() - position;
-				pointer old_finish = m_ptr_finish;
-				if (elements_amount_after_position > size_to_insert)
-				{
-					// move range(finish - size_to_insert, finish) to finish
-					copy_elements(m_ptr_finish - size_to_insert, m_ptr_finish, m_ptr_finish);
-					// finish += size_to_insert
-					m_ptr_finish += size_to_insert;
-					// fill range(pos, pos + size_to_insert) with value_copy
-					fill_value_size_times(position, size_to_insert, value_copy);
-				}
-				else
-				{
-					// fill range(finish, size_to_insert - elements_amount_after_position)
-					fill_value_size_times(m_ptr_finish, size_to_insert - elements_amount_after_position, value_copy);
-					m_ptr_finish += size_to_insert - elements_amount_after_position;
-					// move range(position, olf_finish, finish)
-					copy_elements(position.get_iterator(), old_finish, m_ptr_finish);
-					m_ptr_finish += elements_amount_after_position;
-					// fill range(position, old_finish) with cpy_value
-					fill_value_size_times(position.get_iterator(), elements_amount_after_position, value_copy);
-				}
-			}
-			else
-			{
-				const size_type new_vector_size = check_new_vector_size(size_to_insert);
-				const size_type elements_amount_before_position = position - begin();
-				const size_type elements_amount_after_position = end() - position;
-
-				pointer new_start = m_allocate(new_vector_size);
-				pointer new_finish = new_start;
-
-				fill_value_size_times(new_start + elements_amount_before_position, size_to_insert, value);
-				new_finish += elements_amount_before_position + size_to_insert;
-
-				copy_elements(m_ptr_start, position.get_iterator(), new_start);
-				copy_elements(position.get_iterator(), m_ptr_finish, new_finish);
-				new_finish += elements_amount_after_position;
-
-				base_type::~base_type();
-				m_ptr_start = new_start;
-				m_ptr_finish = new_finish;
-				m_ptr_end_of_storage = new_start + new_vector_size;
-			}
-		
-		}
 
 		void resize(size_type new_size, value_type value = value_type())
 		{
@@ -219,15 +156,75 @@ class vector : protected base_vector<T, Allocator>
 		iterator insert(iterator position, const value_type& value)
 		{
 			insert_values_from_position(value, position, (size_type)1);
-
 			return position;
 		}
 
 		void insert(iterator position, size_type amount, const value_type& value)
 		{ insert_values_from_position(value, position, amount); }
 
-		// template<typename iter>
-		// void insert(iterator position, iter first, iter last);
+		template<typename iter>
+		void insert_dispatch(iterator position, iter first, iter last)
+		{
+			if (first == last)
+				return;
+
+			const size_type range_size = ft::distance(first, last);
+			if (size_type(m_ptr_end_of_storage - m_ptr_finish) >= range_size)
+			{
+				const size_type elements_amount_after_position = end() - position;
+				pointer old_finish = m_ptr_finish;
+				if (elements_amount_after_position > range_size)
+				{
+					copy_elements(m_ptr_finish - range_size, m_ptr_finish, m_ptr_finish);
+					m_ptr_finish += range_size;
+					copy_elements(first, last, position);
+				}
+				else
+				{
+					iter middle = first;
+					middle += elements_amount_after_position;
+					
+					copy_elements(middle, last, m_ptr_finish);
+					m_ptr_finish += range_size - elements_amount_after_position;
+					copy_elements(position.get_iterator(), old_finish, m_ptr_finish);
+					m_ptr_finish += elements_amount_after_position;
+					copy_elements(first, middle, position.get_iterator());
+				}
+			}
+			else
+			{
+				// const size_type new_vector_size = check_new_vector_size(size_to_insert);
+				// const size_type elements_amount_before_position = position - begin();
+				// const size_type elements_amount_after_position = end() - position;
+
+				// pointer new_start = m_allocate(new_vector_size);
+				// pointer new_finish = new_start;
+
+				// fill_value_size_times(new_start + elements_amount_before_position, size_to_insert, value);
+				// new_finish += elements_amount_before_position + size_to_insert;
+
+				// copy_elements(m_ptr_start, position.get_iterator(), new_start);
+				// copy_elements(position.get_iterator(), m_ptr_finish, new_finish);
+				// new_finish += elements_amount_after_position;
+
+				// base_type::~base_type();
+				// m_ptr_start = new_start;
+				// m_ptr_finish = new_finish;
+				// m_ptr_end_of_storage = new_start + new_vector_size;
+			}
+		}
+
+		// template<typename integer>
+		// void insert_dispatch(iterator position, integer size, integer value, true_type)
+		// { insert_values_from_position(value, position, size); }
+
+		template<typename iter>
+		void insert(iterator position, iter first, iter last,
+			typename ft::enable_if<!ft::is_integral<iter>::value, bool>::type* = NULL)
+		{
+			// typedef typename ft::is_integral<iter>::value integral;
+			insert_dispatch(position, first, last);
+		}
 
 		iterator erase(iterator position);
 
@@ -325,6 +322,68 @@ class vector : protected base_vector<T, Allocator>
 				while (position++ != m_ptr_finish)
 					m_allocator.destroy(&(*position));
 				m_ptr_finish = new_finish;
+			}
+		}
+
+		size_type check_new_vector_size(size_type size_to_insert) const
+		{
+			if (max_size() - size() < size_to_insert)
+				throw std::length_error("insert_values_from_position(): max_size limit");
+			const size_type updated_size = size() + ft::max(size(), size_to_insert);
+			return updated_size > max_size() ? max_size() : updated_size;
+		}
+
+		void insert_values_from_position(const value_type& value, iterator position, size_type size_to_insert)
+		{
+			if (!size_to_insert)
+				return;
+
+			if (size_type(m_ptr_end_of_storage - m_ptr_finish) >= size_to_insert)
+			{
+				value_type value_copy = value;
+				const size_type elements_amount_after_position = end() - position;
+				pointer old_finish = m_ptr_finish;
+				if (elements_amount_after_position > size_to_insert)
+				{
+					// move range(finish - size_to_insert, finish) to finish
+					copy_elements(m_ptr_finish - size_to_insert, m_ptr_finish, m_ptr_finish);
+					// finish += size_to_insert
+					m_ptr_finish += size_to_insert;
+					// fill range(pos, pos + size_to_insert) with value_copy
+					fill_value_size_times(position, size_to_insert, value_copy);
+				}
+				else
+				{
+					// fill range(finish, size_to_insert - elements_amount_after_position)
+					fill_value_size_times(m_ptr_finish, size_to_insert - elements_amount_after_position, value_copy);
+					m_ptr_finish += size_to_insert - elements_amount_after_position;
+					// move range(position, olf_finish, finish)
+					copy_elements(position.get_iterator(), old_finish, m_ptr_finish);
+					m_ptr_finish += elements_amount_after_position;
+					// fill range(position, old_finish) with cpy_value
+					fill_value_size_times(position.get_iterator(), elements_amount_after_position, value_copy);
+				}
+			}
+			else
+			{
+				const size_type new_vector_size = check_new_vector_size(size_to_insert);
+				const size_type elements_amount_before_position = position - begin();
+				const size_type elements_amount_after_position = end() - position;
+
+				pointer new_start = m_allocate(new_vector_size);
+				pointer new_finish = new_start;
+
+				fill_value_size_times(new_start + elements_amount_before_position, size_to_insert, value);
+				new_finish += elements_amount_before_position + size_to_insert;
+
+				copy_elements(m_ptr_start, position.get_iterator(), new_start);
+				copy_elements(position.get_iterator(), m_ptr_finish, new_finish);
+				new_finish += elements_amount_after_position;
+
+				base_type::~base_type();
+				m_ptr_start = new_start;
+				m_ptr_finish = new_finish;
+				m_ptr_end_of_storage = new_start + new_vector_size;
 			}
 		}
 
