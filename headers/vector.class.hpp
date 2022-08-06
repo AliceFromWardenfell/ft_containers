@@ -285,7 +285,8 @@ class vector : protected base_vector<T, Allocator>
 			// mb swap allocators
 		}
 
-		void clear() throw();
+		void clear() throw()
+		{ excise_after_position(m_ptr_start); }
 
 	/* Iterators */
 

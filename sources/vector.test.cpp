@@ -614,6 +614,19 @@ static int erase_test()
 	return 0;
 }
 
+static int clear_test()
+{
+	print_colored_caption("Clear test:", CLR_YELLOW);
+
+	ft::vector<int> arr(128, 8);
+	std::cout << "Size = " << arr.size() << std::endl;
+
+	arr.clear();
+	std::cout << "Size = " << arr.size() << std::endl;
+
+	return 0;
+}
+
 static int vector_swap_test()
 {
 	print_colored_caption("Vector::swap() test:", CLR_YELLOW);
@@ -681,7 +694,8 @@ void	vector_test() // mb turn into class
 		pop_back_test,
 		insert_test,
 		erase_test,
-		vector_swap_test
+		vector_swap_test,
+		clear_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
 									sizeof(*vector_test_func);
