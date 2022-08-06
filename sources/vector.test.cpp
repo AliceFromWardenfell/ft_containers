@@ -485,6 +485,32 @@ static int push_back_test()
 	return 0;
 }
 
+static int pop_back_test()
+{
+	print_colored_caption("Pop_back() test:", CLR_YELLOW);
+
+	ft::vector<int> arr;
+	
+	arr.push_back(3);
+	arr.push_back(88);
+	arr.push_back(0);
+	arr.push_back(-6);
+
+	std::cout << "Array: ";
+	for(size_t i = 0; i < arr.size(); i++)
+		std::cout << arr[i] << " ";
+	std::cout << std::endl;
+
+	arr.pop_back();
+
+	std::cout << "Array after pop_back: ";
+	for(size_t i = 0; i < arr.size(); i++)
+		std::cout << arr[i] << " ";
+	std::cout << std::endl;
+
+	return 0;
+}
+
 static int insert_test()
 {
 	print_colored_caption("Insert() test:", CLR_YELLOW);
@@ -619,6 +645,7 @@ void	vector_test() // mb turn into class
 		element_access_test,
 		assign_test,
 		push_back_test,
+		pop_back_test,
 		insert_test,
 		vector_swap_test
 	};

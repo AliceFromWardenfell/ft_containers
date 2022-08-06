@@ -231,7 +231,11 @@ class vector : protected base_vector<T, Allocator>
 			m_allocator.construct(m_ptr_finish++, value);
 		}
 		
-		void pop_back() throw();
+		void pop_back() throw()
+		{
+			m_ptr_finish--;
+			m_allocator.destroy(&(*m_ptr_finish));
+		}
 
 		iterator insert(iterator position, const value_type& value)
 		{
