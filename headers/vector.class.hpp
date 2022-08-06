@@ -187,7 +187,17 @@ class vector : protected base_vector<T, Allocator>
 
 		iterator erase(iterator first, iterator last);
 
-		void swap(vector& instance) throw();
+		void swap(vector& instance) throw()
+		{
+			this_type tmp;
+			tmp.copy_data(*this);
+			copy_data(instance);
+			instance.copy_data(tmp);
+			
+			tmp.m_ptr_start = NULL;
+			tmp.m_ptr_finish = NULL;
+			tmp.m_ptr_end_of_storage = NULL;
+		}
 
 		void clear() throw();
 
@@ -285,6 +295,13 @@ class vector : protected base_vector<T, Allocator>
 					m_allocator.destroy(&(*result));
 				throw;
 			}
+		}
+
+		void copy_data(vector& instance) throw()
+		{
+			m_ptr_start = instance.m_ptr_start;
+			m_ptr_finish = instance.m_ptr_finish;
+			m_ptr_end_of_storage = instance.m_ptr_end_of_storage;
 		}
 
 		void excise_after_position(pointer position) throw()
@@ -454,8 +471,8 @@ class vector : protected base_vector<T, Allocator>
 
 }; // class vector	
 
-	template<typename T, typename Allocator>
-	inline void swap(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs) throw();
+	// template<typename T, typename Allocator>
+	// inline void swap(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs) throw();
 
 	/* Relational operators */
 

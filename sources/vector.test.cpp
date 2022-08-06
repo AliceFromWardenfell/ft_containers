@@ -484,6 +484,34 @@ static int insert_test()
 	return 0;
 }
 
+static int vector_swap_test()
+{
+	print_colored_caption("Vector::swap() test:", CLR_YELLOW);
+
+	ft::vector<int> arr_1(8, 2);
+	ft::vector<int> arr_2(8, 4);
+
+	std::cout << "Arrays before swap: " << std::endl;
+	for (size_t i = 0; i < arr_1.size(); i++)
+		std::cout << arr_1[i] << " ";
+	std::cout << std::endl;
+	for (size_t i = 0; i < arr_2.size(); i++)
+		std::cout << arr_2[i] << " ";
+	std::cout << std::endl;
+
+	arr_1.swap(arr_2);
+
+	std::cout << "Arrays after swap: " << std::endl;
+	for (size_t i = 0; i < arr_1.size(); i++)
+		std::cout << arr_1[i] << " ";
+	std::cout << std::endl;
+	for (size_t i = 0; i < arr_2.size(); i++)
+		std::cout << arr_2[i] << " ";
+	std::cout << std::endl;
+
+	return 0;
+}
+
 void	vector_test() // mb turn into class
 {
 	std::cout << std::endl;
@@ -509,7 +537,8 @@ void	vector_test() // mb turn into class
 		reserve_test,
 		element_access_test,
 		push_back_test,
-		insert_test
+		insert_test,
+		vector_swap_test
 	};
 	const size_t amount_of_tests =	sizeof(vector_test_func) /
 									sizeof(*vector_test_func);
