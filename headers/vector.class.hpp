@@ -197,6 +197,8 @@ class vector : protected base_vector<T, Allocator>
 			tmp.m_ptr_start = NULL;
 			tmp.m_ptr_finish = NULL;
 			tmp.m_ptr_end_of_storage = NULL;
+
+			// swap allocators
 		}
 
 		void clear() throw();
@@ -471,8 +473,9 @@ class vector : protected base_vector<T, Allocator>
 
 }; // class vector	
 
-	// template<typename T, typename Allocator>
-	// inline void swap(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs) throw();
+	template<typename T, typename Allocator>
+	inline void swap(vector<T, Allocator>& lhs, vector<T, Allocator>& rhs)
+	{ lhs.swap(rhs); }
 
 	/* Relational operators */
 

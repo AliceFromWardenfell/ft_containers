@@ -509,6 +509,16 @@ static int vector_swap_test()
 		std::cout << arr_2[i] << " ";
 	std::cout << std::endl;
 
+	ft::swap(arr_1, arr_2);
+
+	std::cout << "Arrays after swap: " << std::endl;
+	for (size_t i = 0; i < arr_1.size(); i++)
+		std::cout << arr_1[i] << " ";
+	std::cout << std::endl;
+	for (size_t i = 0; i < arr_2.size(); i++)
+		std::cout << arr_2[i] << " ";
+	std::cout << std::endl;
+
 	return 0;
 }
 
