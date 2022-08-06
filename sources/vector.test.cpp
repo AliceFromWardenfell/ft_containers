@@ -346,6 +346,17 @@ static int capacity_test()
 	return 0;
 }
 
+static int empty_test()
+{
+	print_colored_caption("Empty() test:", CLR_YELLOW);
+
+	ft::vector<int> arr;
+	std::cout << "Size: " << arr.size() << std::endl;
+	std::cout << "Is empty: " << (arr.empty() ? "true" : "false") << std::endl;
+
+	return 0;
+}
+
 static int reserve_test()
 {
 	print_colored_caption("Reserve() test:", CLR_YELLOW);
@@ -478,6 +489,7 @@ void	vector_test() // mb turn into class
 		max_size_test,
 		resize_test,
 		capacity_test,
+		empty_test,
 		reserve_test,
 		push_back_test,
 		insert_test

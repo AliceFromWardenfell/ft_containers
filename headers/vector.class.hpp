@@ -108,7 +108,8 @@ class vector : protected base_vector<T, Allocator>
 		size_type capacity() const throw()
 		{ return (size_type)(m_ptr_end_of_storage - m_ptr_start); }
 
-		bool empty() const throw();
+		bool empty() const throw()
+		{ return begin() == end(); }
 
 		void reserve(size_type size)
 		{
